@@ -1,2 +1,4 @@
-# blog-publication-system
-Ironhack second module (node js html css MongoDB ) team project.
+# Blog Publication System
+This is a join project between Artur Baumeister, and Mojeeb Rahman Sedeqi in Ironhack Second Module.
+
+
