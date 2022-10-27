@@ -1,23 +1,37 @@
 'use strict';
 
-const mongoose = require('mongoose');
-
-const schema = new mongoose.Schema({
-  name: {
-    type: String,
-    trim: true
+//const mongoose = require('mongoose'); can be deleted.
+const { Schema, model } = require('mongoose');
+// TODO: later add err messages like => required: [true, "Email is required."]
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
+    passwordHashAndSalt: {
+      type: String,
+      required: true
+    },
+    isEmailConfirmed: {
+      type: Boolean,
+      default: false
+    }
   },
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    trim: true
-  },
-  passwordHashAndSalt: {
-    type: String
+  {
+    timestamps: true
   }
-});
+);
 
-const User = mongoose.model('User', schema);
+const User = model('User', userSchema);
 
 module.exports = User;
