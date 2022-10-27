@@ -1,10 +1,10 @@
 ## Models
 
-- User Model ☑:
-  - username: type: String, required: true, unique, trim ✅
-  - email: type: String, unique, lowercase: true, required: true, trim: true ✅
-  - passwordHash: type: String, required: true ✅
-  - emailConfirmation: type: Boolean, default: false ✅
+- User Model:
+  - username: type: String, required: true, unique, trim 
+  - email: type: String, unique, lowercase: true, required: true, trim: true 
+  - passwordHash: type: String, required: true 
+  - emailConfirmation: type: Boolean, default: false 
   - avatarUrl: type: String, default: "images/default_avatar.jpg"
   - isProfileComplete: type: Boolean, default: false, required: true
   - usertype: enum: [author, reader]
@@ -30,7 +30,7 @@
   - title: type: String, required: true, trim: true, minLength: 3, maxLength: 512
   - categories: type: array
   - content: { type: Object, required: true}
-  - number_of_views: { type: Number, default: 0}
+  - numberOfViews: { type: Number, default: 0}
   - timestamps: true
 
 - Comment Model:
@@ -48,68 +48,73 @@
 ## Pages & Views
 
 - Main:
-  - home.hbs
+  - Home
   - (Should show a couple of articles sorted by Topic/Category )
 - Registration:
-  - sign-up.hbs
-  - (Let the user decide on registration if he will be an author => )
-  - (if no provide form for reader-sign up, then let the default val "isProfileComplete: false" )
-  - (if yes provide form for authors with extra mandatory fields, then set "isProfileComplete: true")
+  - Sign-up
+    - At the first registration form we will ask the user to choose between two options that we have for User Type (Reader, Author)
 - Log in:
+  - Sign-in 
 
-  - sign-up.hbs
+- Profile:
+  - Profile Main Page
+  - About me (Tab)
+  - My Published Articles (Tab/paginated list)
+  - Follower / followee (Tab/paginated list)
+  - My History "Viewed/Readed Articles Topics" (Tab/paginated list)
+  - All My Comments (Tab/paginated list)
 
-- Reader profile:
 
-  - user/reader-profile.hbs
-  - (show a paginated list of followed authors)
-  - (show amount + (perhaps a List? ) of created comments with anchor to that blog entry)
-
-- Author profile:
-
-  - user/author-profile.hbs
-  - (Should show amount of Followers/subscribers, as an anchor to users/follower-list.hbs)
-  - (show amount + (perhaps a List? ) of created comments with anchor to that blog entry)
-  - (Could be designed as a dashboard which shows Meta data about articles and followers)
-
-- author create new blog/Publication entry:
-- article/new-entry.hbs
-- (show up and use editor.js to create article)
-
-- Blog/Publication entry details page:
-  - article/details.hbs
+- Publication
+  - Create Publication
+    - Article Metadata Form
+    - Article Content Form (editor.js)
+  - Edit Publication
+    - Article Metadata Form
+    - Article Content Form (editor.js)
+  - Delete confirmation Publication
+- List of Articles
+- Single Article Details Page
   - (Should show all comments made to article)
   - (if authenticated user (reader/author) show create new comment form )
   - (should have edit and delete btn displayed to authors)
-- Blog/Publication Edit:
+- Comment Creation Form
+- Edit Comment Form
 
-  - article/edit.hbs
-  - (Should show up a page with editor.js pre filled with current data)
 
-- Blog/Publication Delete:
 
-  - article/delete-confirm.hbs
 
-- Author Follower list:
-- users/follower-list.hbs
-- (show a paginated list of followers to the author)
-
-- Reader followee list:
-  - users/followee-list.hbs
-  - (show a paginated list of followed authors to the reader/author)
 
 ## Routes
-
-- for main : app.use('/', baseRouter);
+- Main (Root of Project):
+ - app.use('/', baseRouter);
   - GET -> router.get('/', (req, res, next) => {});
-  -
-- for auth: app.use('/authentication', authenticationRouter)
-  - GET -> router.get('/sign-up', (req, res, next) => {})
-  - POST -> router.post('/sign-up', ...
-  - GET -> router.get('/sign-in', ...
-  - POST -> router.post('/sign-in', ...
-  - POST -> router.post('/sign-out', ...
-  -
+
+- Registration / Log-in / Log-out:
+  - app.use('/authentication', authenticationRouter)
+    - GET -> router.get('/sign-up', (req, res, next) => {})
+    - POST -> router.post('/sign-up', ...
+    - GET -> router.get('/sign-in', ...
+    - POST -> router.post('/sign-in', ...
+    - POST -> router.post('/sign-out', ...
+
+- Profile
+  - app.use('/profile', profileRouter)
+    - GET -> router.get('/', (req, res, next) => {})
+    - GET -> router.get('/profile', (req, res, next) => {})
+    - POST -> router.post('/profile', ...
+    - GET -> router.get('/about-me', (req, res, next) => {})
+    - GET -> router.get('/follow-list', (req, res, next) => {})
+    - POST -> router.post('/profile', ...
+    - GET -> router.get('/about-me', (req, res, next) => {})
+    - GET -> router.get('/about-me', (req, res, next) => {})
+    - GET -> router.get('/about-me', (req, res, next) => {})
+    - My Published Articles (Tab/paginated list)
+    - Follower / followee (Tab/paginated list)
+    - My History "Viewed/Readed Articles Topics" (Tab/paginated list)
+    - All My Comments (Tab/paginated list)
+
+
 - for user/member : app.use('/user', userRouter);
   - GET -> userRouter.get('user-profile', (req, res, next) => {})
   - GET -> userRouter.get('author-profile', (req, res, next) => {})
