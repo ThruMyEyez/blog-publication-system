@@ -105,24 +105,28 @@
     - POST -> router.post('/profile', ...
     - GET -> router.get('/about-me', (req, res, next) => {})
     - GET -> router.get('/follow-list', (req, res, next) => {})
-    - POST -> router.post('/profile', ...
+
+
+
+
+    <!-- - POST -> router.post('/profile', ...
     - GET -> router.get('/about-me', (req, res, next) => {})
     - GET -> router.get('/about-me', (req, res, next) => {})
     - GET -> router.get('/about-me', (req, res, next) => {})
     - My Published Articles (Tab/paginated list)
     - Follower / followee (Tab/paginated list)
     - My History "Viewed/Readed Articles Topics" (Tab/paginated list)
-    - All My Comments (Tab/paginated list)
+    - All My Comments (Tab/paginated list) -->
 
 
-- for user/member : app.use('/user', userRouter);
+<!-- - for user/member : app.use('/user', userRouter);
   - GET -> userRouter.get('user-profile', (req, res, next) => {})
   - GET -> userRouter.get('author-profile', (req, res, next) => {})
 - for blog/publication entry: app.use('/article', articleRouter);
-  - GET ->
+  - GET -> -->
 
 ### Status icons
-
+<!-- 
 - ☑ Started
 - ✅ Done
 - ❎ Discarded
@@ -132,4 +136,4 @@
 
 
   - comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
-    - author: [{ type: Schema.Types.ObjectId, ref: "author" }]
+    - author: [{ type: Schema.Types.ObjectId, ref: "author" }] -->
