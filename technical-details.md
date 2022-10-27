@@ -1,36 +1,48 @@
 ## Models
 
 - User Model ☑:
-
   - username: type: String, required: true, unique, trim ✅
   - email: type: String, unique, lowercase: true, required: true, trim: true ✅
   - passwordHash: type: String, required: true ✅
   - emailConfirmation: type: Boolean, default: false ✅
   - avatarUrl: type: String, default: "images/default_avatar.jpg"
-  - comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
-  - isProfileComplete: default: false, Boolean, required
+  - isProfileComplete: type: Boolean, default: false, required: true
   - usertype: enum: [author, reader]
-  - author: [{ type: Schema.Types.ObjectId, ref: "author" }]
-
-- author Profile model: (author model extends/references user model )
-
-  - fullName: type: String, required, trim
-  - avatarUrl: type: String, required: true
-  - skills: type: String, required: true
-  - experience: type: String, required: true
-  - aboutTxt: type: String, required: true
-
-- Comment Model:
-
-  - author: { type: Schema.Types.ObjectId, ref: "User" }
-  - title: type: String, maxLength: 50,
-  - content: type: String, maxLength: 200, required: true
   - timestamps: true
 
-- Publication:
+- Profile Model: 
+  - fullName: type: String, required: true, trim: true
+  - age: type: Number, required: true, trim: true
+  - gender: enum: ['Male', 'Female'], required: true
+  - skills: type: array
+  - experience: type: array
+  - aboutTxt: type: String
+  - user: { type: Schema.Types.ObjectId, ref: "User" }
+  - timestamps: true
+
+- Follow Model:
+  - follower: { type: Schema.Types.ObjectId, ref: "User" }
+  - followee: { type: Schema.Types.ObjectId, ref: "User" }
+  - timestamps: true
+
+- Publication Model:
   - author: { type: Schema.Types.ObjectId, ref: "User" }
-  - ❓ content: defined by editor.js JSON data ❓
-  - comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
+  - title: type: String, required: true, trim: true, minLength: 3, maxLength: 512
+  - categories: type: array
+  - content: { type: Object, required: true}
+  - number_of_views: { type: Number, default: 0}
+  - timestamps: true
+
+- Comment Model:
+  - publication: { type: Schema.Types.ObjectId, ref: "Publication" }
+  - author: { type: Schema.Types.ObjectId, ref: "User" }
+  - message: type: String, maxLength: 1024,
+  - isApproved: type: Boolean, default: false, required: true
+  - timestamps: true
+
+- History Model:
+  - publication: { type: Schema.Types.ObjectId, ref: "Publication" }
+  - user: { type: Schema.Types.ObjectId, ref: "User" }
   - timestamps: true
 
 ## Pages & Views
@@ -111,3 +123,8 @@
 - ❎ Discarded
 - ❌ Problems
 - ❓ Advice needed
+
+
+
+  - comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
+    - author: [{ type: Schema.Types.ObjectId, ref: "author" }]
