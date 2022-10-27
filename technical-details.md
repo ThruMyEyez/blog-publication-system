@@ -1,11 +1,11 @@
 ## Models
 
-- User Model:
+- User Model ☑:
 
-  - username: type: String, required: true, unique, trim
-  - email: type: String, unique, lowercase: true, required: true, trim: true
-  - passwordHash: type: String, required: true
-  - emailConfirmation: type: Boolean, default: false
+  - username: type: String, required: true, unique, trim ✅
+  - email: type: String, unique, lowercase: true, required: true, trim: true ✅
+  - passwordHash: type: String, required: true ✅
+  - emailConfirmation: type: Boolean, default: false ✅
   - avatarUrl: type: String, default: "images/default_avatar.jpg"
   - comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
   - isProfileComplete: default: false, Boolean, required
