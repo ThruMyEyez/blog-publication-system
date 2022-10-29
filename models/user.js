@@ -23,7 +23,7 @@ const userSchema = new Schema(
       required: true
     },
     emailConfirmed: { type: Boolean, default: false },
-    avatarUrl: { type: String, default: 'images/default_avatar.jpg' },
+    avatarUrl: { type: String, default: 'images/default_avatar.png' },
     isProfileComplete: { type: Boolean, default: false },
     userType: { type: String, enum: ['reader', 'author'], default: 'reader' }
   },
