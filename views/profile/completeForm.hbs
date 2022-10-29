@@ -1,0 +1,91 @@
+{{! user: { type: Schema.Types.ObjectId, ref: 'User' },
+    fullName: { type: String, required: true, trim: true },
+    age: { type: Number, required: true, trim: true },
+    gender: { type: String, enum: ['Male', 'Female'], required: true },
+    skills: [String],
+    experience: [String],
+    aboutTxt: { type: String, minLength: 10, maxLength: 1024, trim: true } }}
+
+<div class="container pt-5">
+  <form action="/profile/complete" method="POST">
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        id="input-fullName"
+        name="fullName"
+        placeholder="First name, Last name"
+        class="form-control"
+        required
+      />
+      <label for="input-fullName">First name, Last name</label>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="number"
+        id="input-age"
+        name="age"
+        placeholder="Your age"
+        class="form-control"
+        required
+      />
+      <label for="input-age">Your Age</label>
+    </div>
+
+    <div class="form-floating">
+      <select class="form-select" id="gender" aria-label="Gender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+
+      </select>
+      <label for="gender">Your Gender</label>
+    </div>
+
+    <div class="mb-3 mt-3">
+      <label for="skills">Please choose your skills</label>
+      {{#each skills}}
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value="{{this}}"
+            id="{{this}}"
+            name="skills"
+          />
+          <label class="form-check-label" for="{{this}}">
+            {{this}}
+          </label>
+        </div>
+      {{/each}}
+
+    </div>
+
+    <div class="form-floating mt-3 mb-3">
+      <textarea
+        class="form-control"
+        placeholder="Please describe yourself!"
+        id="aboutme"
+        name="aboutTxt"
+        style="height: 100px"
+      ></textarea>
+      <label for="aboutme">Your About me</label>
+    </div>
+
+    <div class="form-floating">
+      <textarea
+        class="form-control"
+        placeholder="Please describe your experience in the Tech World that your readers fine it comfortable!"
+        id="experience"
+        name="experience[]"
+        style="height: 100px"
+      ></textarea>
+      <label for="experience">Your Experience</label>
+    </div>
+
+    <div class="mb-3">
+      <label for="avatarFile" class="form-label">Upload your profile photo!</label>
+      <input class="form-control" type="file" id="avatarFile" />
+    </div>
+
+    <button class="btn btn-primary text-indigo-100 mt-4">Save my profile</button>
+  </form>
+</div>

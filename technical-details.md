@@ -1,16 +1,18 @@
 ## Models
 
 - User Model:
-  - username: type: String, required: true, unique, trim 
-  - email: type: String, unique, lowercase: true, required: true, trim: true 
-  - passwordHash: type: String, required: true 
-  - emailConfirmation: type: Boolean, default: false 
+
+  - username: type: String, required: true, unique, trim
+  - email: type: String, unique, lowercase: true, required: true, trim: true
+  - passwordHash: type: String, required: true
+  - emailConfirmation: type: Boolean, default: false
   - avatarUrl: type: String, default: "images/default_avatar.jpg"
   - isProfileComplete: type: Boolean, default: false, required: true
   - usertype: enum: [author, reader]
   - timestamps: true
 
-- Profile Model: 
+- Profile Model:
+
   - fullName: type: String, required: true, trim: true
   - age: type: Number, required: true, trim: true
   - gender: enum: ['Male', 'Female'], required: true
@@ -21,11 +23,13 @@
   - timestamps: true
 
 - Follow Model:
+
   - follower: { type: Schema.Types.ObjectId, ref: "User" }
   - followee: { type: Schema.Types.ObjectId, ref: "User" }
   - timestamps: true
 
 - Publication Model:
+
   - author: { type: Schema.Types.ObjectId, ref: "User" }
   - title: type: String, required: true, trim: true, minLength: 3, maxLength: 512
   - categories: type: array
@@ -34,6 +38,7 @@
   - timestamps: true
 
 - Comment Model:
+
   - publication: { type: Schema.Types.ObjectId, ref: "Publication" }
   - author: { type: Schema.Types.ObjectId, ref: "User" }
   - message: type: String, maxLength: 1024,
@@ -54,16 +59,17 @@
   - Sign-up
     - At the first registration form we will ask the user to choose between two options that we have for User Type (Reader, Author)
 - Log in:
-  - Sign-in 
+
+  - Sign-in
 
 - Profile:
+
   - Profile Main Page
   - About me (Tab)
   - My Published Articles (Tab/paginated list)
   - Follower / followee (Tab/paginated list)
   - My History "Viewed/Readed Articles Topics" (Tab/paginated list)
   - All My Comments (Tab/paginated list)
-
 
 - Publication
   - Create Publication
@@ -81,16 +87,14 @@
 - Comment Creation Form
 - Edit Comment Form
 
-
-
-
-
 ## Routes
+
 - Main (Root of Project):
- - app.use('/', baseRouter);
-  - GET -> router.get('/', (req, res, next) => {});
+- app.use('/', baseRouter);
+- GET -> router.get('/', (req, res, next) => {});
 
 - Registration / Log-in / Log-out:
+
   - app.use('/authentication', authenticationRouter)
     - GET -> router.get('/sign-up', (req, res, next) => {})
     - POST -> router.post('/sign-up', ...
@@ -99,15 +103,14 @@
     - POST -> router.post('/sign-out', ...
 
 - Profile
+
   - app.use('/profile', profileRouter)
+
     - GET -> router.get('/', (req, res, next) => {})
-    - GET -> router.get('/profile', (req, res, next) => {})
-    - POST -> router.post('/profile', ...
+    - GET -> router.get('/complete', (req, res, next) => {})
+    - POST -> router.post('/complete', ...
     - GET -> router.get('/about-me', (req, res, next) => {})
     - GET -> router.get('/follow-list', (req, res, next) => {})
-
-
-
 
     <!-- - POST -> router.post('/profile', ...
     - GET -> router.get('/about-me', (req, res, next) => {})
@@ -118,7 +121,6 @@
     - My History "Viewed/Readed Articles Topics" (Tab/paginated list)
     - All My Comments (Tab/paginated list) -->
 
-
 <!-- - for user/member : app.use('/user', userRouter);
   - GET -> userRouter.get('user-profile', (req, res, next) => {})
   - GET -> userRouter.get('author-profile', (req, res, next) => {})
@@ -126,7 +128,8 @@
   - GET -> -->
 
 ### Status icons
-<!-- 
+
+<!--
 - ☑ Started
 - ✅ Done
 - ❎ Discarded

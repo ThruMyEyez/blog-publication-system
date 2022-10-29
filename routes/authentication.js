@@ -39,10 +39,12 @@ router.get('/sign-in', (req, res, next) => {
 router.post('/sign-in', (req, res, next) => {
   let user;
   const { email, password } = req.body;
-  User.findOne({ email })
+  User.findOne({ $or: [{ email: email }, { username: email }] })
     .then((document) => {
       if (!document) {
-        return Promise.reject(new Error("There's no user with that email."));
+        return Promise.reject(
+          new Error("There's no user with that email or username.")
+        );
       } else {
         user = document;
         return bcryptjs.compare(password, user.passwordHashAndSalt);
@@ -51,7 +53,15 @@ router.post('/sign-in', (req, res, next) => {
     .then((result) => {
       if (result) {
         req.session.userId = user._id;
-        res.redirect('/private');
+        if (user.userType === 'author') {
+          if (user.isProfileComplete) {
+            res.redirect('/');
+          } else {
+            res.redirect('/profile/complete');
+          }
+        } else {
+          res.redirect('/');
+        }
       } else {
         return Promise.reject(new Error('Wrong password.'));
       }
