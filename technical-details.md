@@ -37,7 +37,7 @@
   - publication: { type: Schema.Types.ObjectId, ref: "Publication" }
   - author: { type: Schema.Types.ObjectId, ref: "User" }
   - message: type: String, maxLength: 1024,
-  - isApproved: type: Boolean, default: false, required: true
+  - isApproved: type: Boolean, default: true, required: true
   - timestamps: true
 
 - History Model:
