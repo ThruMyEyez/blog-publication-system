@@ -96,55 +96,45 @@
 - Registration / Log-in / Log-out:
 
   - app.use('/authentication', authenticationRouter)
-    - GET -> router.get('/sign-up', (req, res, next) => {})
-    - POST -> router.post('/sign-up', ...
-    - GET -> router.get('/sign-in', ...
-    - POST -> router.post('/sign-in', ...
-    - POST -> router.post('/sign-out', ...
+    - GET -> router.get('/sign-up', (req, res, next) => {}) (need improvement) (Artur, Mojeeb)
+    - POST -> router.post('/sign-up', ... (need improvement) (Artur, Mojeeb)
+    - GET -> router.get('/sign-in', ... (finished)
+    - POST -> router.post('/sign-in', ... (finished)
+    - POST -> router.post('/sign-out', ... (finished)
 
 - Profile
 
   - app.use('/profile', profileRouter)
 
-    - GET -> router.get('/', (req, res, next) => {})
-    - GET -> router.get('/complete', (req, res, next) => {})
-    - POST -> router.post('/complete', ...
-    - GET -> router.get('/about-me', (req, res, next) => {})
-    - GET -> router.get('/follow-list', (req, res, next) => {})
+    - GET -> router.get('/', (req, res, next) => {}) () (Mojeeb, Artur)
+    - GET -> router.get('/complete', (req, res, next) => {}) (need improvement) (Artur)
+    - POST -> router.post('/complete', ... (need improvement) (Artur)
+    - GET -> router.get('/about-me', (req, res, next) => {}) (Mojeeb)
+    - GET -> router.get('/follow-list', (req, res, next) => {}) (Artur)
+
+    - POST -> router.post('/:id/follow', ... (Artur)
+    - POST -> router.post('/:id/unfollow', ... (Artur)
+
+    - GET -> router.get('/my-history', (req, res, next) => {}) (Artur)
+    - GET -> router.get('/my-comments', (req, res, next) => {}) (Artur)
 
   - app.use('/publication', publicationRouter)
 
-    - GET -> router.get('/', (req, res, next) => {})
-    - GET -> router.get('/create', (req, res, next) => {})
-    - POST-> router.post("/create", (req, res, next) => {})
-    - GET -> router.get("/:id/edit", (req, res, next) => {})
-    - POST-> router.post('/:id/delete', routeGuard, (req, res, next) => {});
+    - GET -> router.get('/', (req, res, next) => {}) (Artur, Mojeeb)
+    - GET -> router.get('/create', (req, res, next) => {}) (Mojeeb)
+    - POST-> router.post("/create", (req, res, next) => {}) (Mojeeb)
+    - GET -> router.get('/:id/content', (req, res, next) => {}) (Mojeeb)
+    - POST-> router.post("/:id/content", (req, res, next) => {}) (Mojeeb)
+    - GET -> router.get("/:id/edit", (req, res, next) => {}) (Mojeeb)
+    - POST-> router.post("/:id/edit", (req, res, next) => {}) (Mojeeb)
+    - GET -> router.get("/:id/content/edit", (req, res, next) => {}) (Mojeeb)
+    - POST -> router.get("/:id/content/edit", (req, res, next) => {}) (Mojeeb)
+    - GET -> router.get("/:id/delete", (req, res, next) => {}) (Artur)
+    - POST-> router.post('/:id/delete', routeGuard, (req, res, next) => {}); (Artur)
+    - GET -> router.get('/:id', (req, res, next) => {}) (Artur, Mojeeb)
 
-    <!-- - POST -> router.post('/profile', ...
-    - GET -> router.get('/about-me', (req, res, next) => {})
-    - GET -> router.get('/about-me', (req, res, next) => {})
-    - GET -> router.get('/about-me', (req, res, next) => {})
-    - My Published Articles (Tab/paginated list)
-    - Follower / followee (Tab/paginated list)
-    - My History "Viewed/Readed Articles Topics" (Tab/paginated list)
-    - All My Comments (Tab/paginated list) -->
+    - POST-> router.post('/:id/comment', routeGuard, (req, res, next) => {}); (Artur)
+    - POST-> router.post('/:id/comment/:commentId/edit', routeGuard, (req, res, next) => {}); (Artur)
 
-<!-- - for user/member : app.use('/user', userRouter);
-  - GET -> userRouter.get('user-profile', (req, res, next) => {})
-  - GET -> userRouter.get('author-profile', (req, res, next) => {})
-- for blog/publication entry: app.use('/article', articleRouter);
-  - GET -> -->
-
-### Status icons
-
-<!--
-- ☑ Started
-- ✅ Done
-- ❎ Discarded
-- ❌ Problems
-- ❓ Advice needed
-
-
-
-  - comments: [{ type: Schema.Types.ObjectId, ref: "comment" }]
-    - author: [{ type: Schema.Types.ObjectId, ref: "author" }] -->
+    - POST-> router.post('/:id/comment/:commentId/approve', routeGuard, (req, res, next) => {}); (Artur)
+    - POST-> router.post('/:id/comment/:commentId/disapprove', routeGuard, (req, res, next) => {}); (Artur)
