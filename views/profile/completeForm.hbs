@@ -7,7 +7,7 @@
     aboutTxt: { type: String, minLength: 10, maxLength: 1024, trim: true } }}
 
 <div class="container pt-5">
-  <form action="/profile/complete" method="POST">
+  <form action="/profile/complete" method="POST" enctype="multipart/form-data">
     <div class="form-floating mb-3">
       <input
         type="text"
@@ -83,7 +83,12 @@
 
     <div class="mb-3">
       <label for="avatarFile" class="form-label">Upload your profile photo!</label>
-      <input class="form-control" type="file" id="avatarFile" />
+      <input
+        class="form-control"
+        type="file"
+        id="avatarFile"
+        name="avatarFile"
+      />
     </div>
 
     <button class="btn btn-primary text-indigo-100 mt-4">Save my profile</button>

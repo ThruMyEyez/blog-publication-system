@@ -112,6 +112,14 @@
     - GET -> router.get('/about-me', (req, res, next) => {})
     - GET -> router.get('/follow-list', (req, res, next) => {})
 
+  - app.use('/publication', publicationRouter)
+
+    - GET -> router.get('/', (req, res, next) => {})
+    - GET -> router.get('/create', (req, res, next) => {})
+    - POST-> router.post("/create", (req, res, next) => {})
+    - GET -> router.get("/:id/edit", (req, res, next) => {})
+    - POST-> router.post('/:id/delete', routeGuard, (req, res, next) => {});
+
     <!-- - POST -> router.post('/profile', ...
     - GET -> router.get('/about-me', (req, res, next) => {})
     - GET -> router.get('/about-me', (req, res, next) => {})

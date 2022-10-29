@@ -2,7 +2,18 @@
 
 const { Router } = require('express');
 
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2
+});
+
+const upload = multer({ storage: storage });
+
 const User = require('../models/user');
+const Profile = require('../models/profile');
 
 const router = new Router();
 
@@ -20,6 +31,32 @@ router.get('/complete', (req, res, next) => {
     'MySQL'
   ];
   res.render('profile/completeForm', { skills });
+});
+/*    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    fullName: { type: String, required: true, trim: true },
+    age: { type: Number, required: true, trim: true },
+    gender: { type: String, enum: ['Male', 'Female'], required: true },
+    skills: [String],
+    experience: [String],
+    aboutTxt: { type: String, minLength: 10, maxLength: 1024, trim: true } */
+router.post('/complete', upload.single('avatarFile'), (req, res, next) => {
+  const { fullName, age, gender, skills, experience, aboutTxt } = req.body;
+  console.log(req.body);
+  const userid = req.user._id;
+  Profile.create({
+    fullName,
+    age,
+    gender,
+    skills,
+    experience,
+    aboutTxt
+  })
+    .then(() => {
+      return User.findByIdAndUpdate(userid);
+    })
+    .catch((error) => {
+      console.log('error updating user profile', error);
+    });
 });
 
 // router.post('/sign-up', (req, res, next) => {
