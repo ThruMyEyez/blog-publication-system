@@ -2,7 +2,16 @@
 <p>Welcome to {{title}}</p>
 
 <!-- ???: This is just for testing purpose and no get familiar with it. Can be removed from this line and page -->
-<div id="editorjs" style="border: 1px solid black;"></div>
+<!--<div id="editorjs" style="border: 1px solid black;"></div>
+<button id="editorjs-btn">Save</button>
+-->
+<form action="/" method="POST">
+  <label for="title">Title of Article</label>
+  <input type="text" name="title" placeholder="A cool Title for the Article" />
+  <div id="editorjs"></div>
+  <button id="editorBtn">Save!</button>
+</form>
+
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
 <script

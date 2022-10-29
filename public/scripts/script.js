@@ -29,22 +29,51 @@ const editor = new EditorJS({
       class: Marker,
       shortcut: 'CMD+SHIFT+M'
     }
-    // inlineCode: {
-    //   class: InlineCode,
-    //   shortcut: 'CMD+SHIFT+M'
-    // }
+    //inlineCode: {
+    //  class: InlineCode,
+    //  shortcut: 'CMD+SHIFT+M'
+    //}
   },
   onReady: () => {
     console.log('Editor.js is ready to work!');
   }
 });
-/*
-editor
-  .save()
-  .then((outputData) => {
-    console.log('Article data: ', outputData);
-  })
-  .catch((error) => {
-    console.log('Saving failed: ', error);
+
+const saveBtn = document.querySelector('#editorBtn');
+
+/*const postData = async (data) => {
+  const res = await fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
   });
-*/
+  if (res.status >= 400) {
+    throw new Error('Bad response from server');
+  }
+  const actualResponse = await res.json();
+};*/
+
+saveBtn.addEventListener('click', () => {
+  editor
+    .save()
+    .then((editorData) => {
+      //postData(editorData);
+      return fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editorData)
+      });
+    })
+    .catch((error) => {
+      console.log('err: ', error);
+    });
+});
+
+// JSON.stringify(object, replacer, space);
+
+//savebtn.addEventListener('click', () => {
+//  console.log('button works!!');
+//  editor.save().then((editorData) => {
+//    console.log(editorData);
+//  });
+//});

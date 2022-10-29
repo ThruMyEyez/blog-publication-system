@@ -7,8 +7,8 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      unique: true,
       required: true,
+      unique: true,
       trim: true
     },
     email: {
@@ -22,14 +22,12 @@ const userSchema = new Schema(
       type: String,
       required: true
     },
-    isEmailConfirmed: {
-      type: Boolean,
-      default: false
-    }
+    emailConfirmed: { type: Boolean, default: false },
+    avatarUrl: { type: String, default: 'images/default_avatar.jpg' },
+    isProfileComplete: { type: Boolean, default: false },
+    userType: { type: String, enum: ['reader', 'author'], default: 'reader' }
   },
-  {
-    timestamps: true
-  }
+  { timestamps: true }
 );
 
 const User = model('User', userSchema);
