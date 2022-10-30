@@ -18,28 +18,42 @@
   <!-- profile skills array each -->
   <div>
     <P><b>Your skills:</b></P>
-    <ul>
+    <ul class="d-flex list-unstyled">
       {{#each profile.skills}}
-
-        <li>{{this}}</li>
-
+        <li><span>#{{this}}&nbsp;</span></li>
       {{/each}}
     </ul>
   </div>
+
   <!-- profile experience array each -->
   <div>
     <P><b>Your experience:</b></P>
-    <ul>
+    <ul class="list-unstyled">
       {{#each profile.experience}}
         {{#if @first}}
-          <li><b>{{this}}</b></li>
+          <li><strong>{{this}}</strong></li>
         {{else}}
           <li>{{this}}</li>
         {{/if}}
+
       {{/each}}
     </ul>
   </div>
-  <!--end of experience each -->
+  <!--end of experience each 
+
+    <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+    <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
+    <ul class="d-flex list-unstyled mt-auto">
+      <li class="me-auto">
+        <img
+          src="https://github.com/twbs.png"
+          alt="Bootstrap"
+          width="32"
+          height="32"
+          class="rounded-circle border border-white"
+        />
+      </li>
+  -->
   <p>Author profile completed at {{createdAt}}</p>
 {{else}}
   <p>Your profile is set to usertype: {{userType}}</p>
