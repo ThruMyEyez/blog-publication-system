@@ -14,10 +14,28 @@ const upload = multer({ storage: storage });
 
 const User = require('../models/user');
 const Profile = require('../models/profile');
+const { Schema } = require('mongoose');
+const routeGuard = require('../middleware/route-guard');
 
 const router = new Router();
 
-router.get('/complete', (req, res, next) => {
+router.get('/', routeGuard, (req, res, next) => {
+  //* Main profile route for "/profile"
+  User.findById(req.user._id)
+    .populate('profile')
+    .then((user) => {
+      res.render('profile/main', user);
+    })
+    .catch((error) => {
+      console.log(`Error while getting user profile: ${error}`);
+      next(error);
+    });
+  //.populate('profile')
+  //.then((dbUser) => {
+  //  console.log(dbUser);
+});
+
+router.get('/complete', routeGuard, (req, res, next) => {
   const skills = [
     'HTML',
     'CSS',
@@ -32,30 +50,26 @@ router.get('/complete', (req, res, next) => {
   ];
   res.render('profile/completeForm', { skills });
 });
-/*    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    fullName: { type: String, required: true, trim: true },
-    age: { type: Number, required: true, trim: true },
-    gender: { type: String, enum: ['Male', 'Female'], required: true },
-    skills: [String],
-    experience: [String],
-    aboutTxt: { type: String, minLength: 10, maxLength: 1024, trim: true } */
+
+//* So far, so god ✅
 router.post('/complete', upload.single('avatarFile'), (req, res, next) => {
-  const { fullName, age, gender, skills, experience, aboutTxt } = req.body;
-  console.log(req.body);
-  const userid = req.user._id;
-  Profile.create({
-    fullName,
-    age,
-    gender,
-    skills,
-    experience,
-    aboutTxt
-  })
+  //const { fullName, age, gender, skills, experience, aboutTxt } = req.body;
+  const userId = req.user._id;
+
+  Profile.create({ user: req.user._id, ...req.body })
+    .then((dbProfile) => {
+      return User.findByIdAndUpdate(
+        userId,
+        { profile: dbProfile._id, isProfileComplete: true },
+        { new: true }
+      );
+    })
     .then(() => {
-      return User.findByIdAndUpdate(userid);
+      res.redirect('/');
     })
     .catch((error) => {
-      console.log('error updating user profile', error);
+      console.log('A Error Occurred at creating user Profile: ', error);
+      next(error);
     });
 });
 

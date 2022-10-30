@@ -1,0 +1,52 @@
+<p>username: {{username}}</p>
+<p>email: {{email}}</p>
+
+{{#if emailConfirmed}}
+  <p>Your Email is confirmed</p>
+{{else}}
+  <p>Your Email is not confirmed</p>
+  <a href="#">Send confirmation Email again.</a>
+{{/if}}
+
+<p>user type: {{userType}}</p>
+
+{{#if isProfileComplete}}
+  <!-- here could be a profile partial -->
+  <p>Full name: {{profile.fullName}}</p>
+  <p>Age: {{profile.age}}</p>
+  <p>Gender: {{profile.gender}}</p>
+  <!-- profile skills array each -->
+  <div>
+    <P><b>Your skills:</b></P>
+    <ul>
+      {{#each profile.skills}}
+
+        <li>{{this}}</li>
+
+      {{/each}}
+    </ul>
+  </div>
+  <!-- profile experience array each -->
+  <div>
+    <P><b>Your experience:</b></P>
+    <ul>
+      {{#each profile.experience}}
+        {{#if @first}}
+          <li><b>{{this}}</b></li>
+        {{else}}
+          <li>{{this}}</li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+  <!--end of experience each -->
+  <p>Author profile completed at {{createdAt}}</p>
+{{else}}
+  <p>Your profile is set to usertype: {{userType}}</p>
+  <p>if you want to be an Author an be able, to write and publish Articles your
+    profile has to be filled out complete
+  </p>
+  <a href="/profile/complete">complete my author profile now! </a>
+{{/if}}
+
+<p>Member since {{createdAt}}</p>
