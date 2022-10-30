@@ -19,6 +19,8 @@ const routeGuard = require('../middleware/route-guard');
 
 const router = new Router();
 
+//* So far, so god ✅
+//TODO Add "edit" button / anchor and route..
 router.get('/', routeGuard, (req, res, next) => {
   //* Main profile route for "/profile"
   User.findById(req.user._id)
@@ -30,9 +32,6 @@ router.get('/', routeGuard, (req, res, next) => {
       console.log(`Error while getting user profile: ${error}`);
       next(error);
     });
-  //.populate('profile')
-  //.then((dbUser) => {
-  //  console.log(dbUser);
 });
 
 router.get('/complete', routeGuard, (req, res, next) => {
