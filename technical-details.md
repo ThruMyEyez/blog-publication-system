@@ -112,6 +112,8 @@
     - GET -> router.get('/about-me', (req, res, next) => {}) (Mojeeb)
     - GET -> router.get('/follow-list', (req, res, next) => {}) (Artur)
 
+    - POST -> router.post('/:id/edit', ... (Artur)
+
     - POST -> router.post('/:id/follow', ... (Artur)
     - POST -> router.post('/:id/unfollow', ... (Artur)
 
