@@ -72,6 +72,14 @@ router.post('/complete', upload.single('avatarFile'), (req, res, next) => {
     });
 });
 
+//*Tasks to do =>
+router.get('/about-me', (req, res, next) => {});
+router.get('/follow-list', (req, res, next) => {});
+router.post('/:id/follow', (req, res, next) => {});
+router.post('/:id/unfollow', (req, res, next) => {});
+router.get('/my-history', (req, res, next) => {});
+router.get('/my-comments', (req, res, next) => {});
+
 // router.post('/sign-up', (req, res, next) => {
 //   const { username, email, password, user_type } = req.body;
 //   bcryptjs
