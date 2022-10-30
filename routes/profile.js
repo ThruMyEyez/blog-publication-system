@@ -51,28 +51,38 @@ router.get('/complete', routeGuard, (req, res, next) => {
 });
 
 //* So far, so god ✅
-router.post('/complete', upload.single('avatarFile'), (req, res, next) => {
-  //const { fullName, age, gender, skills, experience, aboutTxt } = req.body;
-  const userId = req.user._id;
+router.post(
+  '/complete',
+  routeGuard,
+  upload.single('avatarFile'),
+  (req, res, next) => {
+    //const { fullName, age, gender, skills, experience, aboutTxt } = req.body;
+    const { _id } = req.user;
 
-  Profile.create({ user: req.user._id, ...req.body })
-    .then((dbProfile) => {
-      return User.findByIdAndUpdate(
-        userId,
-        { profile: dbProfile._id, isProfileComplete: true },
-        { new: true }
-      );
-    })
-    .then(() => {
-      res.redirect('/');
-    })
-    .catch((error) => {
-      console.log('A Error Occurred at creating user Profile: ', error);
-      next(error);
-    });
-});
+    Profile.create({ user: req.user._id, ...req.body })
+      .then((dbProfile) => {
+        return User.findByIdAndUpdate(
+          _id,
+          { profile: dbProfile._id, isProfileComplete: true },
+          { new: true }
+        );
+      })
+      .then(() => {
+        res.redirect('/profile');
+      })
+      .catch((error) => {
+        console.log('A Error Occurred at creating user Profile: ', error);
+        next(error);
+      });
+  }
+);
 
 //*Tasks to do =>
+router.get('/:id/edit', (req, res, next) => {});
+router.post('/:id/edit', (req, res, next) => {});
+
+router.get('/:id/delete', (req, res, next) => {});
+router.get('/:id/delete', (req, res, next) => {});
 router.get('/about-me', (req, res, next) => {});
 router.get('/follow-list', (req, res, next) => {});
 router.post('/:id/follow', (req, res, next) => {});
