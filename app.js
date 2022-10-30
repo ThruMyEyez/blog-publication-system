@@ -61,7 +61,7 @@ app.use(authenticationDeserializer);
 app.use('/', baseRouter);
 app.use('/authentication', authenticationRouter);
 app.use('/profile', profileRouter);
-app.use('/publication', publicationRouter);
+app.use('/articles', publicationRouter);
 // Catch missing routes and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
