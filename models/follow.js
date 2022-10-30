@@ -4,8 +4,8 @@ const { Schema, model } = require('mongoose');
 
 const followSchema = new Schema(
   {
-    follower: { type: Schema.Types.ObjectId, ref: 'User' },
-    followee: { type: Schema.Types.ObjectId, ref: 'User' }
+    follower: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    followee: { type: Schema.Types.ObjectId, required: true, ref: 'User' }
   },
   { timestamps: true }
 );
