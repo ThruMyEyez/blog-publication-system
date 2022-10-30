@@ -31,7 +31,7 @@
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a class="nav-link" href="/articles">Articles</a>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled">Disabled</a>
@@ -40,6 +40,15 @@
 
       <ul class="navbar-nav d-flex mb-2 mb-lg-0">
         {{#if user}}
+          {{#if user.isProfileComplete}}
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/articles/create"
+              >new Article</a>
+            </li>
+          {{/if}}
           <li class="nav-item">
             <a
               class="nav-link active"
