@@ -1,0 +1,12 @@
+<div class="container">
+  <h1>Article main page</h1>
+  <!-- Todo: Make a list with categorys and fit each Article in the right Topic! -->
+  {{#each articles}}
+    <div>
+      <h4>{{title}}</h4><p>Category:
+        {{#each categories}}<span>{{this}}</span>{{/each}}</p>
+      <p>views: {{numberOfViews}}</p>
+      <p>author: {{author.username}} aka {{author.username}}</p>
+    </div>
+  {{/each}}
+</div>
