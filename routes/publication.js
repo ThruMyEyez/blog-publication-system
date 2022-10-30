@@ -67,11 +67,34 @@ router.post('/create', (req, res, next) => {
     });
 });
 
+//* 🚩✅ route is tested and works - still some functionality TODO
 router.get('/:id', (req, res, next) => {
   //* Article detail page with comments
+  const { id } = req.params;
+  // TODO: add logic => if user === road/viewed Publication don't increase numberOfViews.
+  Publication.findByIdAndUpdate(
+    id,
+    { $inc: { numberOfViews: 1 } }
+    /* ,{ new: true } */
+  ).then(() => {
+    return Publication.findById(id)
+      .populate({
+        path: 'author',
+        /* select: 'avatarUrl isProfileComplete', */
+        populate: [{ path: 'profile' }]
+      })
+      .then((article) => {
+        //console.log('#####/:id', article);
+        res.render('publications/details', article);
+      })
+      .catch((error) => {
+        console.log(`Error getting publication(article) from DB: ${error}`);
+        next(error);
+      });
+  });
 });
 
-//*I hope you're not mad about me for doing part of this route
+//*I hope you're not mad about me for doing a part of this route
 //*It was necessary for my routes.
 router.get('/:id/content', (req, res, next) => {
   const { id } = req.params;
