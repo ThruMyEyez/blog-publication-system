@@ -5,6 +5,7 @@ const commentSchema = new Schema(
   {
     publication: { type: Schema.Types.ObjectId, ref: 'Publication' },
     author: { type: Schema.Types.ObjectId, ref: 'User' },
+    title: { type: String, minLength: 3, maxLength: 42, required: true },
     message: {
       type: String,
       minLength: 1,
