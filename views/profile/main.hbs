@@ -1,45 +1,46 @@
-<p>username: {{username}}</p>
-<p>email: {{email}}</p>
+<div class="container">
+  <p>username: {{username}}</p>
+  <p>email: {{email}}</p>
 
-{{#if emailConfirmed}}
-  <p>Your Email is confirmed</p>
-{{else}}
-  <p>Your Email is not confirmed</p>
-  <a href="#">Send confirmation Email again.</a>
-{{/if}}
+  {{#if emailConfirmed}}
+    <p>Your Email is confirmed</p>
+  {{else}}
+    <p>Your Email is not confirmed</p>
+    <a href="#">Send confirmation Email again.</a>
+  {{/if}}
 
-<p>user type: {{userType}}</p>
+  <p>user type: {{userType}}</p>
 
-{{#if isProfileComplete}}
-  <!-- here could be a profile partial -->
-  <p>Full name: {{profile.fullName}}</p>
-  <p>Age: {{profile.age}}</p>
-  <p>Gender: {{profile.gender}}</p>
-  <!-- profile skills array each -->
-  <div>
-    <P><b>Your skills:</b></P>
-    <ul class="d-flex list-unstyled">
-      {{#each profile.skills}}
-        <li><span>#{{this}}&nbsp;</span></li>
-      {{/each}}
-    </ul>
-  </div>
+  {{#if isProfileComplete}}
+    <!-- here could be a profile partial -->
+    <p>Full name: {{profile.fullName}}</p>
+    <p>Age: {{profile.age}}</p>
+    <p>Gender: {{profile.gender}}</p>
+    <!-- profile skills array each -->
+    <div>
+      <P><b>Your skills:</b></P>
+      <ul class="d-flex list-unstyled">
+        {{#each profile.skills}}
+          <li><span>#{{this}}&nbsp;</span></li>
+        {{/each}}
+      </ul>
+    </div>
 
-  <!-- profile experience array each -->
-  <div>
-    <P><b>Your experience:</b></P>
-    <ul class="list-unstyled">
-      {{#each profile.experience}}
-        {{#if @first}}
-          <li><strong>{{this}}</strong></li>
-        {{else}}
-          <li>{{this}}</li>
-        {{/if}}
+    <!-- profile experience array each -->
+    <div>
+      <P><b>Your experience:</b></P>
+      <ul class="list-unstyled">
+        {{#each profile.experience}}
+          {{#if @first}}
+            <li><strong>{{this}}</strong></li>
+          {{else}}
+            <li>{{this}}</li>
+          {{/if}}
 
-      {{/each}}
-    </ul>
-  </div>
-  <!--end of experience each 
+        {{/each}}
+      </ul>
+    </div>
+    <!--end of experience each 
 
     <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
     <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">Short title, long jacket</h3>
@@ -54,13 +55,27 @@
         />
       </li>
   -->
-  <p>Author profile completed at {{createdAt}}</p>
-{{else}}
-  <p>Your profile is set to usertype: {{userType}}</p>
-  <p>if you want to be an Author an be able, to write and publish Articles your
-    profile has to be filled out complete
-  </p>
-  <a href="/profile/complete">complete my author profile now! </a>
-{{/if}}
+    <p>Author profile completed at {{createdAt}}</p>
+  {{else}}
+    <p>Your profile is set to usertype: {{userType}}</p>
+    <p>if you want to be an Author an be able, to write and publish Articles
+      your profile has to be filled out complete
+    </p>
+    <a href="/profile/complete">complete my author profile now! </a>
+  {{/if}}
 
-<p>Member since {{createdAt}}</p>
+  <div>
+    <p>Today is the: <strong>{{actualLocalDate}}</strong></p>
+    {{#ifEqual createdLocalDate actualLocalDate}}
+      <p>Member since:
+        <strong>Today!!</strong>
+        @
+        <strong>{{createdLocalTime}}</strong></p>
+    {{else}}
+      <p>Member since:
+        <strong>{{createdLocalDate}}</strong>
+        @
+        <strong>{{createdLocalTime}}</strong></p>
+    {{/ifEqual}}
+  </div>
+</div>

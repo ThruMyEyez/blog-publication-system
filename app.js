@@ -24,6 +24,10 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname, 'views/partials'));
+//* Handlebars custom helper goes here:
+hbs.registerHelper('ifEqual', function (a, b, options) {
+  return a === b ? options.fn(this) : options.inverse(this);
+});
 
 app.use(serveFavicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(

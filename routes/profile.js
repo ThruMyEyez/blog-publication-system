@@ -26,6 +26,12 @@ router.get('/', routeGuard, (req, res, next) => {
   User.findById(req.user._id)
     .populate('profile')
     .then((user) => {
+      const { createdAt } = user;
+
+      user.createdLocalDate = createdAt.toLocaleDateString();
+      user.createdLocalTime = createdAt.toLocaleTimeString();
+      user.actualLocalDate = new Date().toLocaleDateString();
+
       res.render('profile/main', user);
     })
     .catch((error) => {
