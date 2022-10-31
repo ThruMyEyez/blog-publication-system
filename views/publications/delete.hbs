@@ -1,3 +1,21 @@
 <div id="container">
   <h1>Delete confirm page</h1>
+
+  {{numberOfViews}}
+  {{title}}
+  {{_id}}
+  <div id="delete-warning">
+    {{#if isOwn}}
+      <h2>Are you sure you want to delete the Article: </h2>
+      <p>The Article + All comments in the Article will be deleted.</p>
+      <p>After you click on
+        <strong>"confirm deletion of article"</strong>
+        you cannot restore your article anymore!</p>
+
+      <form action="/articles/{{_id}}/delete" method="post">
+        <button class="btn btn-danger"><b>confirm deletion of article!</b></button>
+      </form>
+    {{/if}}
+  </div>
+
 </div>

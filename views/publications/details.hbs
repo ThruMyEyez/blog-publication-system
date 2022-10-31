@@ -1,13 +1,75 @@
 <main class="container">
+
   <h3 class="my-3">Article details</h3>
+
+
+
   <article>
-    <h3 class="my-3">{{title}}</h3>
-    <p>Article by: <img src="/{{author.avatarUrl}}" alt="author avatar" width="32" height="32" class="rounded-circle mx-2 border border-dark"> <strong>{{author.profile.fullName}}</strong> aka <strong>{{author.username}}</strong></p>
-    <p>views:&nbsp;{{numberOfViews}}</p>
-    <div id="editorjs-content-TODO"><p>Here goes the editorjs content for the specific publication</p></div>
+    
+    <h3 class="my-3">{{article.title}}</h3>
+    <p>Article by: <img src="/{{article.author.avatarUrl}}" alt="author avatar" width="32" height="32" class="rounded-circle mx-2 border border-dark" /> <strong>{{article.author.profile.fullName}}</strong> aka <strong>{{article.author.username}}</strong></p>
+    <p>Published at: {{article.createdAt}} | views:&nbsp;<strong></strong>{{article.numberOfViews}}</strong></p>
+    
+    {{#if article.isOwn}}
+      <a href="/articles/{{article._id}}/delete">delete this article!</a>
+    {{/if}}    
+    
+    <div id="editorjs-content-TODO" class="mx-auto w-75 mh-25 bg-light border border-bottom-0 border-info rounded-top" style="height: 180px;"><p>Here goes the editorjs content for the specific publication</p></div>
+    
+    
   </article>
-  
+ 
+  <section class="mx-auto w-75 bg-light border border-dark rounded-bottom d-flex flex-column">
+
+    <h6 class="mx-auto">comment section</h6>
+
+        <!-- *** Show comments for everyone | Show only approved comments  -->
+    {{#each comments}}
+      {{#if isApproved}}
+      <p>Written by <img src="/{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
+      <p>{{title}}</p>
+      <p>{{message}}</p>
+        {{#if isOwn}}
+        <form action="/articles/{{publication._id}}/comment/{{_id}}/edit" method="POST">
+        <p>{{_id}}</p>
+        <p>{{publication._id}}</p>
+        <button class="mx-3 btn btn-primary">edit comment</button>
+        </form>
+        {{/if}}
+      {{else}}
+        <p>Written by <img src="/{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
+        <p class="align-self-center text-danger">! this comment is blocked !</p>
+      {{/if}}
+    {{/each}}
+
+    <!-- POST => router.post('/:id/comment', routeGuard, (req, res, next) => {}); -->
+    <!-- *** Create new comment for authenticated.users  -->
+    {{#if user}}
+      <form class="" action="/articles/{{article._id}}/comment" method="POST">
+
+          <div class="form-floating mb-0 ">
+            <input
+              type="text"
+              id="input-title"
+              name="title"
+              placeholder="Comment title"
+              class="form-control rounded-0 rounded-top border-0 border-top"
+            />
+            <label for="input-email">message title</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <textarea id="input-text" class="form-control py-3 rounded-0 rounded-bottom" name="message"  rows="6"></textarea>
+            <label for="input-text" class="form-label p-1">write your message:</label>
+          </div>
+
+          <button class="mx-3 btn btn-primary">Submit new comment</button>
+      </form>
+    {{/if}}
+
+  </section>
   <!-- Todo:  #each category/topic  -->
+  <!-- Todo: return formatted date from createdAt  -->
   <!--<main class="d-flex flex-column pb-3 text-dark">-->
   
   </main>

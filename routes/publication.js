@@ -16,6 +16,7 @@ const upload = multer({ storage: storage });
 const User = require('../models/user');
 const Profile = require('../models/profile');
 const Publication = require('../models/publication');
+const Comment = require('../models/comment');
 
 const router = new Router();
 
@@ -70,28 +71,111 @@ router.post('/create', (req, res, next) => {
 //* 🚩✅ route is tested and works - still some functionality TODO
 router.get('/:id', (req, res, next) => {
   //* Article detail page with comments
-  const { id } = req.params;
+  const { id: publicationId } = req.params;
+  let article;
   // TODO: add logic => if user === road/viewed Publication don't increase numberOfViews.
   Publication.findByIdAndUpdate(
-    id,
+    publicationId,
     { $inc: { numberOfViews: 1 } }
     /* ,{ new: true } */
-  ).then(() => {
-    return Publication.findById(id)
-      .populate({
+  )
+    .then(() => {
+      return Publication.findById(publicationId).populate({
         path: 'author',
-        /* select: 'avatarUrl isProfileComplete', */
         populate: [{ path: 'profile' }]
-      })
-      .then((article) => {
-        //console.log('#####/:id', article);
-        res.render('publications/details', article);
-      })
-      .catch((error) => {
-        console.log(`Error getting publication(article) from DB: ${error}`);
-        next(error);
       });
-  });
+    })
+    .then((_article) => {
+      article = _article;
+      article.isOwn = req.user
+        ? String(req.user.id) === String(article.author._id)
+        : false;
+      //{ publication: ObjectId('635eac2c3da339f0f5b85dfe') }
+      return Comment.find({ publication: `${publicationId}` }).populate(
+        //'author'
+        { path: 'author', select: 'username avatarUrl' } //[{}]
+      );
+    })
+    .then((comments) => {
+      comments = comments.map((comment) => {
+        //console.log(req.user._id.toString() === comment.author._id.toString());
+        return {
+          ...comment._doc,
+          isOwn: req.user
+            ? String(req.user._id) === String(comment.author._id)
+            : false
+        };
+      });
+      //console.log('__result_!: ', comments);
+      res.render('publications/details', { article, comments });
+    })
+    .catch((error) => {
+      console.log(`Error getting publication(article) from DB: ${error}`);
+      next(error);
+    });
+});
+
+//* So far, so god ✅
+router.post('/:id/comment', routeGuard, (req, res, next) => {
+  const { id: publication } = req.params,
+    { id: author } = req.user;
+  //console.log('btn works!', author, '&&', publication);
+  Comment.create({ publication, author, ...req.body })
+    .then((comment) => {
+      console.log(`successfully created new comment: ${comment}`);
+      res.redirect(`/articles/${publication}`);
+    })
+    .catch((error) => {
+      console.log(`Error at creating new comment: ${error}`);
+      next(error);
+    });
+});
+
+//*TODO: WORK IN PROGRESS | Artur
+router.post('/:id/comment/:commentId/edit', routeGuard, (req, res, next) => {
+  const { id: publicationId, commentId } = req.params;
+
+  console.log('params for route: ', req.params);
+});
+
+//*TODO: Make here sure that only the own author can delete | W.I.P. Artur
+//* So far, so god ✅
+router.get('/:id/delete', routeGuard, (req, res, next) => {
+  const { id } = req.params;
+  Publication.findById(id)
+    .then((publication) => {
+      publication.isOwn = req.user
+        ? String(req.user.id) === String(publication.author._id)
+        : false;
+      res.render('publications/delete', publication);
+      //console.log(`is user === author for publication? => ${publication.isOwn}`);
+    })
+    .catch((error) => {
+      console.log(`Error getting publicationDocument from DB: ${error}`);
+      next(error);
+    });
+});
+//* So far, so god ✅
+router.post('/:id/delete', routeGuard, (req, res, next) => {
+  console.log('POST of delete article with: ', req.params);
+  const { id: publicationId } = req.params;
+
+  Comment.deleteMany({ publication: `${publicationId}` })
+    .then((result) => {
+      console.log(
+        `${result.deletedCount} comments deleted from publication with ID ${publicationId}.`
+      );
+      return Publication.findByIdAndDelete(publicationId);
+    })
+    .then((result) => {
+      console.log(`publication with ID ${publicationId} deleted.`);
+    })
+    .catch((error) => {
+      console.log(
+        `Error during deleting of one publication and their linked comments: ${error}`
+      );
+      next(error);
+    });
 });
 
 //*I hope you're not mad about me for doing a part of this route
@@ -108,16 +192,14 @@ router.get('/:id/content', (req, res, next) => {
       next(error);
     });
 });
+
 router.post('/:id/content', (req, res, next) => {});
 router.get('/:id/content/edit', (req, res, next) => {});
 router.post('/:id/content/edit', (req, res, next) => {});
 router.get('/:id/edit', (req, res, next) => {});
 router.post('/:id/edit', (req, res, next) => {});
 //
-router.get('/:id/delete', (req, res, next) => {});
-router.post('/:id/delete', (req, res, next) => {});
-router.post('/:id/comment', routeGuard, (req, res, next) => {});
-router.post('/:id/comment/:commentId/edit', routeGuard, (req, res, next) => {});
+
 router.post(
   '/:id/comment/:commentId/approve',
   routeGuard,
