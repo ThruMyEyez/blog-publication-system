@@ -24,8 +24,7 @@ const publicationSchema = new Schema(
     numberOfViews: {
       type: Number,
       default: 0
-    },
-    comments: { type: Schema.Types.ObjectId, ref: 'Comment' }
+    }
   },
   { timestamps: true }
 );
