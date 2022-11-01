@@ -12,22 +12,41 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-const User = require('../models/user');
-const Profile = require('../models/profile');
+const User = require('./../models/user');
+const Profile = require('./../models/profile');
+const Follow = require('./../models/follow');
 const { Schema } = require('mongoose');
 const routeGuard = require('../middleware/route-guard');
 
 const router = new Router();
 
 //* So far, so god ✅
+router.get('/', (req, res, next) => {
+  if (req.user) {
+    console.log(req.user._id);
+    res.redirect(`/profile/${req.user._id}`);
+  } else {
+    res.redirect('/authentication/sign-in');
+  }
+});
+
+router.get('/edit', routeGuard, (req, res, next) => {
+  const { userId } = req.session.userId;
+});
+
+router.post('/edit', routeGuard, (req, res, next) => {});
+
+//* So far, so god ✅
 //TODO Add "edit" button / anchor and route..
-router.get('/', routeGuard, (req, res, next) => {
+//TODO this should be public, if its users own profile => serve edit and delete functionality
+router.get('/:id', routeGuard, (req, res, next) => {
   //* Main profile route for "/profile"
-  User.findById(req.user._id)
+  const { id } = req.params;
+  User.findById(id)
     .populate('profile')
     .then((user) => {
       const { createdAt } = user;
-
+      console.log(user);
       user.createdLocalDate = createdAt.toLocaleDateString();
       user.createdLocalTime = createdAt.toLocaleTimeString();
       user.actualLocalDate = new Date().toLocaleDateString();
@@ -83,16 +102,28 @@ router.post(
   }
 );
 
-//*Tasks to do =>
-router.get('/:id/edit', (req, res, next) => {});
-router.post('/:id/edit', (req, res, next) => {});
+router.get('/edit', routeGuard, (req, res, next) => {
+  console.log(111111111111122222222222222222222222222);
+});
+router.post('/edit', routeGuard, (req, res, next) => {});
 
-router.get('/:id/delete', (req, res, next) => {});
-router.get('/:id/delete', (req, res, next) => {});
+router.post('/:id/follow', routeGuard, (req, res, next) => {
+  //Follow
+});
+
+router.post('/:id/unfollow', routeGuard, (req, res, next) => {
+  //Unfollow
+});
+
+//*Tasks to do =>
+router.get('/edit', routeGuard, (req, res, next) => {});
+router.post('/edit', routeGuard, (req, res, next) => {});
+
+router.get('/delete', routeGuard, (req, res, next) => {});
+router.get('/delete', routeGuard, (req, res, next) => {});
 router.get('/about-me', (req, res, next) => {});
 router.get('/follow-list', (req, res, next) => {});
-router.post('/:id/follow', (req, res, next) => {});
-router.post('/:id/unfollow', (req, res, next) => {});
+
 router.get('/my-history', (req, res, next) => {});
 router.get('/my-comments', (req, res, next) => {});
 
