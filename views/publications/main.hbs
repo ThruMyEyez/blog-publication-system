@@ -4,19 +4,45 @@
   <!-- Todo:  #each category/topic  -->
   <main class="d-flex flex-column pb-3 text-dark">
     {{#each articles}}
-      <a href="/articles/{{_id}}" class="text-decoration-none">
-        <div class="rounded-3 border border-secondary mb-3 bg-light text-dark">
+      <a href="/articles/{{_id}}" class="text-decoration-none text-reset">
+        <div class="rounded-3 border border-secondary mb-3 bg-light">
           <h4 class="px-2 mt-5 mb-4 fw-bold">{{title}}</h4>
           <div id="article-info" class="d-flex flex-column">
             <p class="my-0 mx-3 p-0">Category:
               {{#each categories}}<span>{{this}}</span>{{/each}}</p>
             <p class="my-0 mx-3 p-0">views: {{numberOfViews}}</p>
-            <p class="my-0 mx-3 p-0">author:{{author.username}}</p>
+            <p class="my-0 mx-3 p-0">author:{{author.username}} </p>
+
+            <!-- TODO  show follow button if authenticated viewer✅ && if user !== author ✅ && if user is following show unfollow btn ☑Todo-->
+            {{#if authenticatedViewer}}
+              {{#ifEqual author.id viewerId}}
+                <a
+                  class="btn btn-outline-secondary btn-sm d-inline border-0 border-top"
+                  href="/articles/{{_id}}/edit"
+                >edit Article</a>
+              {{else}}
+                {{#if isFollowed}}
+                  <!-- if reader is already following then show "unfollow" btn -->
+                  <form action="/profile/{{author._id}}/unfollow" method="post">
+                    <button class="btn mx-3 btn-outline-secondary">unfollow
+                      Author</button>
+                  </form>
+                {{else}}
+                  <form
+                    class=""
+                    action="/profile/{{author._id}}/follow"
+                    method="post"
+                  >
+                    <button class="btn mx-3 btn-outline-secondary">follow Author</button>
+                  </form>
+                {{/if}}
+
+              {{/ifEqual}}
+            {{/if}}
             <!-- We should really consider to add a Thumbnail image to the Publications in the model and to render it here -->
           </div>
         </div>
       </a>
-      <!--  "/profile/{{author._id}}/follow" "/profile/{{author._id}}/unfollow" -->
     {{/each}}
   </main>
 </div>

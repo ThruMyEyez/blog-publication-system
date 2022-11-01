@@ -17,16 +17,41 @@ const User = require('../models/user');
 const Profile = require('../models/profile');
 const Publication = require('../models/publication');
 const Comment = require('../models/comment');
+const Follow = require('../models/follow');
 
 const router = new Router();
 
 //* So far, so god ✅
 router.get('/', (req, res, next) => {
+  //const { id: viewerId } = req.user;
+  let publications;
+
   Publication.find()
+    .sort({ createdAt: -1 })
     .populate('author')
     .then((articles) => {
-      console.log(articles);
-      res.render('publications/main', { articles });
+      articles.forEach((article) => {
+        article.authenticatedViewer = req.user ? true : false;
+        article.viewerId = req.user ? String(req.user._id) : false;
+        console.log(article.author._id);
+      });
+      publications = articles;
+      if (req.user) {
+        return Follow.find({ follower: req.user._id });
+      } else {
+        return [];
+      }
+    })
+    .then((follows) => {
+      follows.forEach((follow) => {
+        publications.forEach((article) => {
+          article.isFollowed =
+            String(article.author._id) === String(follow.followee)
+              ? true
+              : false;
+        });
+      });
+      res.render('publications/main', { articles: publications });
     })
     .catch((error) => {
       console.log(
@@ -90,7 +115,6 @@ router.get('/:id', (req, res, next) => {
       article.isOwn = req.user
         ? String(req.user.id) === String(article.author._id)
         : false;
-      //{ publication: ObjectId('635eac2c3da339f0f5b85dfe') }
       return Comment.find({ publication: `${publicationId}` }).populate(
         //'author'
         { path: 'author', select: 'username avatarUrl' } //[{}]
@@ -138,7 +162,7 @@ router.post('/:id/comment/:commentId/edit', routeGuard, (req, res, next) => {
   console.log('params for route: ', req.params);
 });
 
-//*TODO: Make here sure that only the own author can delete | W.I.P. Artur
+//*TODO: Make here sure that only the own author can delete | done, testing needed | W.I.P. Artur /*
 //* So far, so god ✅
 router.get('/:id/delete', routeGuard, (req, res, next) => {
   const { id } = req.params;
