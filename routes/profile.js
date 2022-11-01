@@ -37,7 +37,7 @@ router.get('/edit', routeGuard, (req, res, next) => {
   User.findById(req.user._id)
     .populate('profile')
     .then((user) => {
-      console.log(user);
+      //console.log(user);
       res.render('profile/edit', user);
     })
     .catch((error) => {
@@ -52,8 +52,10 @@ router.post(
   routeGuard,
   upload.single('avatarUrl'),
   (req, res, next) => {
-    req.body.avatarUrl = req.file.path;
-    console.log('POST OF /profile/edit', req.body);
+    // req.body.avatarUrl = req.file.path;
+    // }
+    //console.log('POST OF /profile/edit', req.body);
+    //console.log(req.file.path);
     //console.log(req.file.path);
     User.findByIdAndUpdate(
       req.user.id,
@@ -61,7 +63,7 @@ router.post(
       { new: true }
     )
       .then((updatedProfile) => {
-        console.log('profile updated successfully!');
+        // console.log('profile updated successfully!', updatedProfile);
         res.redirect('/profile/edit');
       })
       .catch((error) => {
@@ -69,28 +71,6 @@ router.post(
       });
   }
 );
-
-//* So far, so god ✅
-//TODO Add "edit" button / anchor and route..
-//TODO this should be public, if its users own profile => serve edit and delete functionality
-router.get('/:id', routeGuard, (req, res, next) => {
-  //* Main profile route for "/profile"
-  const { id } = req.params;
-  User.findById(id)
-    .populate('profile')
-    .then((user) => {
-      const { createdAt } = user;
-      user.createdLocalDate = createdAt.toLocaleDateString();
-      user.createdLocalTime = createdAt.toLocaleTimeString();
-      user.actualLocalDate = new Date().toLocaleDateString();
-      user.isOwnProfile = req.user.id === id;
-      res.render('profile/main', user);
-    })
-    .catch((error) => {
-      console.log(`Error while getting user profile: ${error}`);
-      next(error);
-    });
-});
 
 //TODO Fix bug Cast to ObjectId failed for value "complete" (type string) at path "_id" for model "User"
 router.get('/complete', routeGuard, (req, res, next) => {
@@ -136,6 +116,34 @@ router.post(
   }
 );
 
+router.get('/delete', (req, res, next) => {
+  // console.log('DELETE PROFILE confirm PAGE');
+  // res.render('profile/delete');
+});
+
+router.post('/delete', routeGuard, (req, res, next) => {});
+//* So far, so god ✅
+//TODO Add "edit" button / anchor and route..
+//TODO this should be public, if its users own profile => serve edit and delete functionality
+router.get('/:id', routeGuard, (req, res, next) => {
+  //* Main profile route for "/profile"
+  const { id } = req.params;
+  User.findById(id)
+    .populate('profile')
+    .then((user) => {
+      const { createdAt } = user;
+      user.createdLocalDate = createdAt.toLocaleDateString();
+      user.createdLocalTime = createdAt.toLocaleTimeString();
+      user.actualLocalDate = new Date().toLocaleDateString();
+      user.isOwnProfile = req.user.id === id;
+      res.render('profile/main', user);
+    })
+    .catch((error) => {
+      console.log(`Error while getting user profile: ${error}`);
+      next(error);
+    });
+});
+
 //* So far, so god ✅
 router.post('/:id/follow', routeGuard, (req, res, next) => {
   //Follow
@@ -159,13 +167,8 @@ router.post('/:id/unfollow', routeGuard, (req, res, next) => {
   });
 });
 
-router.get('/delete', routeGuard, (req, res, next) => {
-  console.log('DELETE PROFILE PAGE');
-  res.render('profile/delete');
-});
-
 //*Tasks to do =>
-router.post('/delete', routeGuard, (req, res, next) => {});
+
 router.get('/about-me', (req, res, next) => {});
 router.get('/follow-list', routeGuard, (req, res, next) => {});
 
