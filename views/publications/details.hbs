@@ -7,7 +7,7 @@
   <article>
     
     <h3 class="my-3">{{article.title}}</h3>
-    <p>Article by: <img src="/{{article.author.avatarUrl}}" alt="author avatar" width="32" height="32" class="rounded-circle mx-2 border border-dark" /> <strong>{{article.author.profile.fullName}}</strong> aka <strong>{{article.author.username}}</strong></p>
+    <p>Article by: <img src="{{article.author.avatarUrl}}" alt="author avatar" width="32" height="32" class="rounded-circle mx-2 border border-dark" /> <strong>{{article.author.profile.fullName}}</strong> aka <strong>{{article.author.username}}</strong></p>
     <p>Published at: {{article.createdAt}} | views:&nbsp;<strong></strong>{{article.numberOfViews}}</strong></p>
     
     {{#if article.isOwn}}
@@ -26,7 +26,7 @@
         <!-- *** Show comments for everyone | Show only approved comments  -->
     {{#each comments}}
       {{#if isApproved}}
-      <p>Written by <img src="/{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
+      <p>Written by <img src="{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
       <p>{{title}}</p>
       <p>{{message}}</p>
         {{#if isOwn}}
