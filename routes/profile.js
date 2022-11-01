@@ -116,12 +116,38 @@ router.post(
   }
 );
 
-router.get('/delete', (req, res, next) => {
-  // console.log('DELETE PROFILE confirm PAGE');
-  // res.render('profile/delete');
+//* So far, so god ✅ (/delete routes)
+//* very basic - need improvement: ask if author want to delete all publications,
+//* delete all corresponding comments if reader/author wants to
+//* delete all corresponding follows from DB && History
+router.get('/delete', routeGuard, (req, res, next) => {
+  const { id } = req.user;
+  res.render('profile/delete');
+});
+//TODO W.I.P.
+router.post('/delete', routeGuard, (req, res, next) => {
+  const { id } = req.user;
+  let profileID;
+  console.log(id, req.user.profile);
+  User.findByIdAndDelete(id)
+    .then((result) => {
+      console.log('User Deleted', result);
+      return Follow.deleteMany({ follower: req.user._id });
+    })
+    .then((result) => {
+      return result.isProfileComplete
+        ? Profile.findByIdAndDelete(String(req.user.profile))
+        : null;
+    })
+    .then((result) => {
+      console.log('user + followings + profile deleted: ', result);
+      res.redirect('/');
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
-router.post('/delete', routeGuard, (req, res, next) => {});
 //* So far, so god ✅
 //TODO Add "edit" button / anchor and route..
 //TODO this should be public, if its users own profile => serve edit and delete functionality
@@ -150,21 +176,29 @@ router.post('/:id/follow', routeGuard, (req, res, next) => {
   const { id } = req.params;
   Follow.create({ follower: req.user._id, followee: id })
     .then(() => {
-      res.redirect(`/profile/${id}`);
+      //      res.redirect(`/profile/${id}`);
+      res.redirect('back');
     })
     .catch((error) => {
       next(error);
     });
 });
 
-//TODO W.I.P.
+//* So far, so god ✅
 router.post('/:id/unfollow', routeGuard, (req, res, next) => {
   //Unfollow
   const { id } = req.params;
   Follow.findOneAndDelete({
     follower: req.user._id,
     followee: id
-  });
+  })
+    .then((result) => {
+      console.log('success unfollowing', result);
+      res.redirect('back');
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 //*Tasks to do =>
