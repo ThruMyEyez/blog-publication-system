@@ -11,9 +11,10 @@
             <p class="my-0 mx-3 p-0">Category:
               {{#each categories}}<span>{{this}}</span>{{/each}}</p>
             <p class="my-0 mx-3 p-0">views: {{numberOfViews}}</p>
-            <p class="my-0 mx-3 p-0">author:{{author.username}} </p>
+            <p class="my-0 mx-3 p-0">author:
+              <a href="/profile/{{author._id}}">{{author.username}}</a></p>
 
-            <!-- TODO  show follow button if authenticated viewer✅ && if user !== author ✅ && if user is following show unfollow btn ☑Todo-->
+            <!-- TODO  show follow button if authenticated viewer✅ && if user !== author ✅ && if user is following show unfollow btn ✅done so far-->
             {{#if authenticatedViewer}}
               {{#ifEqual author.id viewerId}}
                 <a

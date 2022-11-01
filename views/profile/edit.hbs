@@ -1,0 +1,85 @@
+<div class="container">
+
+  <h1 class="my-3">profile edit page</h1>
+
+  <img src="{{avatarUrl}}" alt="Your Avatar!" />
+  {{!username}}
+  {{!email}}
+  {{!emailConfirmed}}
+  {{!userType}}
+
+  {{#if isProfileComplete}}
+    <p>Profile complete! You are allowed now to write and publish Articles!</p>
+    <a
+      class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
+      href="/articles/create"
+    >create new article</a>
+  {{else}}
+    <p>Author Profile Incomplete! You are not allowed to write and publish
+      Articles!</p>
+    <a
+      class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
+      href="/profile/complete"
+    >Complete profile and become an author!</a>
+  {{/if}}
+
+  <form action="/profile/edit" method="post" enctype="multipart/form-data">
+
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        id="input-username"
+        name="username"
+        placeholder="edit username"
+        class="form-control"
+        value="{{username}}"
+        required
+      />
+      <label for="input-username">Username</label>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input
+        type="email"
+        id="input-email"
+        name="email"
+        placeholder="edit email"
+        class="form-control"
+        value="{{email}}"
+        required
+      />
+      <label for="input-email">Email</label>
+    </div>
+
+    <div class="mb-3">
+      <label for="avatarFile" class="form-label mt-3">Upload your profile photo!</label>
+      <input class="form-control" type="file" id="avatarUrl" name="avatarUrl" />
+    </div>
+
+    {{#ifEqual userType "author"}}
+      <p>your account type is {{userType}}, you allowed to publish articles</p>
+    {{else}}
+      <div class="form-floating">
+        <select
+          class="form-select"
+          id="userType"
+          name="userType"
+          aria-label="userType"
+          required
+        >
+          <option value="reader">reader</option>
+          <option value="author">author</option>
+
+        </select>
+        <label for="userType">Account type</label>
+      </div>
+    {{/ifEqual}}
+
+    <button class="btn btn-primary text-indigo-100 my-3">Update my profile</button>
+    <a
+      class="mx-auto my-3 btn btn-outline-danger d-inline"
+      href="/profile/delete"
+    >delete profile</a>
+  </form>
+
+</div>
