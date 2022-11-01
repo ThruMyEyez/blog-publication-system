@@ -8,21 +8,6 @@
   {{!emailConfirmed}}
   {{!userType}}
 
-  {{#if isProfileComplete}}
-    <p>Profile complete! You are allowed now to write and publish Articles!</p>
-    <a
-      class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
-      href="/articles/create"
-    >create new article</a>
-  {{else}}
-    <p>Author Profile Incomplete! You are not allowed to write and publish
-      Articles!</p>
-    <a
-      class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
-      href="/profile/complete"
-    >Complete profile and become an author!</a>
-  {{/if}}
-
   <form action="/profile/edit" method="post" enctype="multipart/form-data">
 
     <div class="form-floating mb-3">
@@ -58,6 +43,22 @@
 
     {{#ifEqual userType "author"}}
       <p>your account type is {{userType}}, you allowed to publish articles</p>
+
+      {{#if isProfileComplete}}
+        <p>Profile complete! You are allowed now to write and publish Articles!</p>
+        <a
+          class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
+          href="/articles/create"
+        >create new article</a>
+      {{else}}
+        <p>Author Profile Incomplete! You are not allowed to write and publish
+          Articles!</p>
+        <a
+          class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
+          href="/profile/complete"
+        >Complete profile and become an author!</a>
+      {{/if}}
+
     {{else}}
       <div class="form-floating">
         <select
