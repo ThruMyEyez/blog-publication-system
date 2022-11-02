@@ -46,7 +46,7 @@ router.get('/edit', routeGuard, (req, res, next) => {
     });
 });
 
-//* So far, so god ✅ (base version => will be extended)
+//* So far, so god ☑️ | TODO: Complete req.file.path logic
 router.post(
   '/edit',
   routeGuard,
@@ -72,7 +72,6 @@ router.post(
   }
 );
 
-//TODO Fix bug Cast to ObjectId failed for value "complete" (type string) at path "_id" for model "User"
 router.get('/complete', routeGuard, (req, res, next) => {
   const skills = [
     'HTML',
@@ -124,6 +123,7 @@ router.get('/delete', routeGuard, (req, res, next) => {
   const { id } = req.user;
   res.render('profile/delete');
 });
+
 //TODO W.I.P.
 router.post('/delete', routeGuard, (req, res, next) => {
   const { id } = req.user;
@@ -148,9 +148,27 @@ router.post('/delete', routeGuard, (req, res, next) => {
     });
 });
 
+//TODO Add a view logic for this route
+router.get('/follow-list', routeGuard, (req, res, next) => {
+  //* control the following logic on one page reachable by this route
+  Follow.find({ follower: req.user._id })
+    .then((followings) => {
+      res.render('profile/follow-list', followings);
+    })
+    .catch((error) => {
+      next(error);
+    });
+});
+
+router.get('/my-history', (req, res, next) => {
+  /* FOR CONTROLLING THESE MODELDATA: 
+    publication: { type: Schema.Types.ObjectId, ref: 'Publication' },
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    isCompletelyRoad: { type: Boolean, default: false }
+  */
+});
 //* So far, so god ✅
-//TODO Add "edit" button / anchor and route..
-//TODO this should be public, if its users own profile => serve edit and delete functionality
+//DOne this should be public✅, if its users own profile => serve edit and delete functionality✅
 router.get('/:id', routeGuard, (req, res, next) => {
   //* Main profile route for "/profile"
   const { id } = req.params;
@@ -201,13 +219,11 @@ router.post('/:id/unfollow', routeGuard, (req, res, next) => {
     });
 });
 
-//*Tasks to do =>
-
-router.get('/about-me', (req, res, next) => {});
-router.get('/follow-list', routeGuard, (req, res, next) => {});
-
-router.get('/my-history', (req, res, next) => {});
+//TODO: get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
 router.get('/my-comments', (req, res, next) => {});
+
+//*Tasks to do =>
+router.get('/about-me', (req, res, next) => {});
 
 module.exports = router;
 // router.post('/sign-up', (req, res, next) => {
