@@ -97,7 +97,7 @@ router.post('/create', (req, res, next) => {
 router.get('/:id', (req, res, next) => {
   //* Article detail page with comments
   const { id: publicationId } = req.params;
-  let article;
+  let publication;
   // TODO: add logic => if user === road/viewed Publication don't increase numberOfViews.
   Publication.findByIdAndUpdate(
     publicationId,
@@ -110,11 +110,12 @@ router.get('/:id', (req, res, next) => {
         populate: [{ path: 'profile' }]
       });
     })
-    .then((_article) => {
-      article = _article;
+    .then((article) => {
       article.isOwn = req.user
         ? String(req.user.id) === String(article.author._id)
         : false;
+      console.log(article.canModerateComments);
+      publication = article;
       return Comment.find({ publication: `${publicationId}` }).populate(
         //'author'
         { path: 'author', select: 'username avatarUrl' } //[{}]
@@ -125,13 +126,13 @@ router.get('/:id', (req, res, next) => {
         //console.log(req.user._id.toString() === comment.author._id.toString());
         return {
           ...comment._doc,
-          isOwn: req.user
+          isOwnComment: req.user
             ? String(req.user._id) === String(comment.author._id)
             : false
         };
       });
-      //console.log('__result_!: ', comments);
-      res.render('publications/details', { article, comments });
+
+      res.render('publications/details', { article: publication, comments });
     })
     .catch((error) => {
       console.log(`Error getting publication(article) from DB: ${error}`);
@@ -153,13 +154,6 @@ router.post('/:id/comment', routeGuard, (req, res, next) => {
       console.log(`Error at creating new comment: ${error}`);
       next(error);
     });
-});
-
-//*TODO: WORK IN PROGRESS | Artur
-router.post('/:id/comment/:commentId/edit', routeGuard, (req, res, next) => {
-  const { id: publicationId, commentId } = req.params;
-
-  console.log('params for route: ', req.params);
 });
 
 //*TODO: Make here sure that only the own author can delete | done, testing needed | W.I.P. Artur /*
@@ -224,16 +218,35 @@ router.get('/:id/edit', (req, res, next) => {});
 router.post('/:id/edit', (req, res, next) => {});
 //
 
-router.post(
-  '/:id/comment/:commentId/approve',
-  routeGuard,
-  (req, res, next) => {}
-);
+router.post('/:id/comment/:commentId/approve', routeGuard, (req, res, next) => {
+  //TODO
+});
+
+//* So far, so god ✅
 router.post(
   '/:id/comment/:commentId/disapprove',
   routeGuard,
-  (req, res, next) => {}
+  (req, res, next) => {
+    const { id, commentId } = req.params;
+    console.log(id, commentId);
+    Comment.findByIdAndUpdate(
+      commentId,
+      { isApproved: false } /*{ new: true }*/
+    )
+      .then(() => {
+        console.log(`banned comment with ID: ${commentId}`);
+        res.redirect('back');
+      })
+      .catch((error) => {
+        next(error);
+      });
+  }
 );
-//
+//*TODO: WORK IN PROGRESS | Artur
+router.post('/:id/comment/:commentId/edit', routeGuard, (req, res, next) => {
+  const { id: publicationId, commentId } = req.params;
+
+  console.log('params for route: ', req.params);
+});
 
 module.exports = router;

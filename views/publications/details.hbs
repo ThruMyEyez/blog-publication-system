@@ -2,8 +2,8 @@
 
   <h3 class="my-3">Article details</h3>
 
-
-
+  {{#if canModerateComments}} CAAAN MODD {{/if}}
+  {{#if article.isOwn}} CAN MOD<b>TRUE</b> {{!user}} OWN {{/if}}
   <article>
     
     <h3 class="my-3">{{article.title}}</h3>
@@ -29,12 +29,19 @@
       <p>Written by <img src="{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
       <p>{{title}}</p>
       <p>{{message}}</p>
-        {{#if isOwn}}
+        {{#if isOwnComment}}
         <form action="/articles/{{publication._id}}/comment/{{_id}}/edit" method="POST">
-        <p>{{_id}}</p>
-        <p>{{publication._id}}</p>
         <button class="mx-3 btn btn-primary">edit comment</button>
         </form>
+        
+        {{else}}
+          {{#if ../article.isOwn}} 
+            <form action="/articles/{{../article._id}}/comment/{{_id}}/disapprove" method="POST">
+              <button class="mx-3 btn btn-outline-danger btn-sm">!ban commment</button>
+            </form>
+          {{/if}}
+        {{!Aprprove dissaprove }}
+
         {{/if}}
       {{else}}
         <p>Written by <img src="/{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
