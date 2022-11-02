@@ -159,28 +159,35 @@ router.get('/follow-list', routeGuard, (req, res, next) => {
       next(error);
     });
 });
-//TODO W.I.P!
+//* So far, so god ✅
 router.get('/my-history', routeGuard, (req, res, next) => {
   const { id } = req.user;
   History.find({ user: id })
-    .populate('publication')
+    .populate({
+      path: 'publication',
+      select: 'title',
+      populate: {
+        path: 'author',
+        select: 'username avatarUrl',
+        populate: { path: 'profile', select: 'fullName' }
+      }
+    })
     .then((history) => {
       //* Process meta data to each read history entry
+
       history = history.map((entry) => {
         const lastReadDate =
           new Date().toLocaleDateString() ===
           entry.updatedAt.toLocaleDateString()
             ? 'Today'
             : entry.updatedAt.toLocaleDateString();
-
         return {
-          ...entry,
+          ...entry._doc,
           lastReadDate: lastReadDate,
           lastReadTime: entry.updatedAt.toLocaleTimeString()
         };
       });
-      //console.log(new Date().toLocaleDateString());
-      // console.log('read history of user: ', history);
+      //console.log('read history of user: ', history);
       res.render('profile/history', { history });
     })
     .catch((error) => {

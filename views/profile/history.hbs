@@ -6,6 +6,13 @@
         <p>title: <b>{{publication.title}}</b></p>
         <p>read <b>{{__v}}</b> times </p>
         <p>read on {{lastReadDate}} at {{lastReadTime}}</p>
+        <p> {{publication.author.username}} </p>
+        <p> {{publication.author.profile.fullName}} </p>
+        <img
+          src="{{publication.author.avatarUrl}}"
+          alt="Author avatar picture"
+          style="height: 24px;width; 24px;"
+        />
       </li>
       {{ist}}
     {{/each}}
