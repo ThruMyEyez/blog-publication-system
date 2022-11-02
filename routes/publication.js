@@ -114,7 +114,6 @@ router.get('/:id', (req, res, next) => {
       article.isOwn = req.user
         ? String(req.user.id) === String(article.author._id)
         : false;
-      console.log(article.canModerateComments);
       publication = article;
       return Comment.find({ publication: `${publicationId}` }).populate(
         //'author'
@@ -122,16 +121,22 @@ router.get('/:id', (req, res, next) => {
       );
     })
     .then((comments) => {
+      //comments.forEach((comm) => {
+      //  comm.createdLocalDate = comm.createdAt.toLocaleDateString();
+      //  comm.createdLocalTime = comm.createdAt.toLocaleTimeString()
+      //});
       comments = comments.map((comment) => {
-        //console.log(req.user._id.toString() === comment.author._id.toString());
         return {
           ...comment._doc,
+          createdLocalDate: comment.createdAt.toLocaleDateString(),
+          createdLocalTime: comment.createdAt.toLocaleTimeString(),
           isOwnComment: req.user
             ? String(req.user._id) === String(comment.author._id)
             : false
         };
       });
-
+      console.log(comments);
+      //console.log(comment.createdLocalTime, comment.createdLocalDate);
       res.render('publications/details', { article: publication, comments });
     })
     .catch((error) => {
