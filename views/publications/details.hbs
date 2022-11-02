@@ -2,8 +2,6 @@
 
   <h3 class="my-3">Article details</h3>
 
-  {{#if canModerateComments}} CAAAN MODD {{/if}}
-  {{#if article.isOwn}} CAN MOD<b>TRUE</b> {{!user}} OWN {{/if}}
   <article>
     
     <h3 class="my-3">{{article.title}}</h3>
@@ -26,26 +24,32 @@
         <!-- *** Show comments for everyone | Show only approved comments  -->
     {{#each comments}}
       {{#if isApproved}}
-      <p>Written by <img src="{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdLocalDate}} @ {{createdLocalTime}} </p>
-      <p>{{title}}</p>
-      <p>{{message}}</p>
+        <p>Written by <a class="text-reset" href="/profile/{{author._id}}"><img src="{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong></a> on {{createdLocalDate}} @ {{createdLocalTime}} </p>
+        <p>{{title}}</p>
+        <p>{{message}}</p>
         {{#if isOwnComment}}
-        <form action="/articles/{{publication._id}}/comment/{{_id}}/edit" method="POST">
-        <button class="mx-3 btn btn-primary">edit comment</button>
-        </form>
+          <form action="/articles/{{publication._id}}/comment/{{_id}}/edit" method="POST">
+          <button class="mx-3 btn btn-primary">edit comment</button>
+          </form>
         
-        {{else}}
-          {{#if ../article.isOwn}} 
+        {{else}} <!-- else of isOwnComment -->
+          
+          {{#if ../article.isOwn}} <!-- if user === author of this article enable, to Moderate Disapprove/Ban comment messages --> 
             <form action="/articles/{{../article._id}}/comment/{{_id}}/disapprove" method="POST">
-              <button class="mx-3 btn btn-outline-danger btn-sm">!ban commment</button>
+              <button class="mx-3 btn btn-outline-danger btn-sm"><b>ban comment</b></button>
             </form>
           {{/if}}
-        {{!Aprprove dissaprove }}
-
+        
         {{/if}}
-      {{else}}
-        <p>Written by <img src="/{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdAt}}</p>
+      {{else}} <!-- else of isApproved -->
+        <p>Written by <img src="{{author.avatarUrl}}" alt="author avatar" width="24" height="24" class="rounded-circle mx-2 border border-dark" /><strong>{{author.username}}</strong> on {{createdLocalDate}}</p>
         <p class="align-self-center text-danger">! this comment is blocked !</p>
+        {{#if ../article.isOwn}} <!-- if user === author of this article, enable to Moderate Approved/Unbanned comment messages -->
+          <form action="/articles/{{../article._id}}/comment/{{_id}}/approve" method="POST">
+            <button class="mx-3 btn btn-outline-warning btn-sm"><b>allow comment</b></button>
+          </form>
+        {{/if}}
+      
       {{/if}}
     {{/each}}
 

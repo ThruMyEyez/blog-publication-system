@@ -121,10 +121,6 @@ router.get('/:id', (req, res, next) => {
       );
     })
     .then((comments) => {
-      //comments.forEach((comm) => {
-      //  comm.createdLocalDate = comm.createdAt.toLocaleDateString();
-      //  comm.createdLocalTime = comm.createdAt.toLocaleTimeString()
-      //});
       comments = comments.map((comment) => {
         return {
           ...comment._doc,
@@ -135,8 +131,6 @@ router.get('/:id', (req, res, next) => {
             : false
         };
       });
-      console.log(comments);
-      //console.log(comment.createdLocalTime, comment.createdLocalDate);
       res.render('publications/details', { article: publication, comments });
     })
     .catch((error) => {
@@ -178,6 +172,7 @@ router.get('/:id/delete', routeGuard, (req, res, next) => {
       next(error);
     });
 });
+
 //* So far, so god ✅
 router.post('/:id/delete', routeGuard, (req, res, next) => {
   console.log('POST of delete article with: ', req.params);
@@ -215,16 +210,25 @@ router.get('/:id/content', (req, res, next) => {
       next(error);
     });
 });
-
+//*ROUTES TO DO
 router.post('/:id/content', (req, res, next) => {});
 router.get('/:id/content/edit', (req, res, next) => {});
 router.post('/:id/content/edit', (req, res, next) => {});
 router.get('/:id/edit', (req, res, next) => {});
 router.post('/:id/edit', (req, res, next) => {});
-//
 
+//* So far, so god ✅
 router.post('/:id/comment/:commentId/approve', routeGuard, (req, res, next) => {
-  //TODO
+  const { id, commentId } = req.params;
+  Comment.findByIdAndUpdate(commentId, { isApproved: true } /*{ new: true }*/)
+    .then(() => {
+      console.log(`unbanned comment with ID: ${commentId}`);
+      res.redirect('back');
+    })
+    .catch((error) => {
+      console.log(`Error at unbanning/ allowing a comment by author: ${error}`);
+      next(error);
+    });
 });
 
 //* So far, so god ✅
@@ -243,6 +247,7 @@ router.post(
         res.redirect('back');
       })
       .catch((error) => {
+        console.log(`Error at disapproving a comment by an author: ${error}`);
         next(error);
       });
   }
