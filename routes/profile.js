@@ -15,6 +15,7 @@ const upload = multer({ storage: storage });
 const User = require('./../models/user');
 const Profile = require('./../models/profile');
 const Follow = require('./../models/follow');
+const History = require('./../models/history');
 const { Schema } = require('mongoose');
 const routeGuard = require('../middleware/route-guard');
 
@@ -55,7 +56,6 @@ router.post(
     // req.body.avatarUrl = req.file.path;
     // }
     //console.log('POST OF /profile/edit', req.body);
-    //console.log(req.file.path);
     //console.log(req.file.path);
     User.findByIdAndUpdate(
       req.user.id,
@@ -159,19 +159,41 @@ router.get('/follow-list', routeGuard, (req, res, next) => {
       next(error);
     });
 });
+//TODO W.I.P!
+router.get('/my-history', routeGuard, (req, res, next) => {
+  const { id } = req.user;
+  History.find({ user: id })
+    .populate('publication')
+    .then((history) => {
+      //* Process meta data to each read history entry
+      history = history.map((entry) => {
+        const lastReadDate =
+          new Date().toLocaleDateString() ===
+          entry.updatedAt.toLocaleDateString()
+            ? 'Today'
+            : entry.updatedAt.toLocaleDateString();
 
-router.get('/my-history', (req, res, next) => {
-  /* FOR CONTROLLING THESE MODELDATA: 
-    publication: { type: Schema.Types.ObjectId, ref: 'Publication' },
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    isCompletelyRoad: { type: Boolean, default: false }
-  */
+        return {
+          ...entry,
+          lastReadDate: lastReadDate,
+          lastReadTime: entry.updatedAt.toLocaleTimeString()
+        };
+      });
+      //console.log(new Date().toLocaleDateString());
+      // console.log('read history of user: ', history);
+      res.render('profile/history', { history });
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
+
 //* So far, so god ✅
 //DOne this should be public✅, if its users own profile => serve edit and delete functionality✅
-router.get('/:id', routeGuard, (req, res, next) => {
+router.get('/:id', (req, res, next) => {
   //* Main profile route for "/profile"
   const { id } = req.params;
+  let userDocument;
   User.findById(id)
     .populate('profile')
     .then((user) => {
@@ -179,8 +201,9 @@ router.get('/:id', routeGuard, (req, res, next) => {
       user.createdLocalDate = createdAt.toLocaleDateString();
       user.createdLocalTime = createdAt.toLocaleTimeString();
       user.actualLocalDate = new Date().toLocaleDateString();
-      user.isOwnProfile = req.user.id === id;
-      res.render('profile/main', user);
+      user.isOwnProfile = req.user ? req.user.id === id : false;
+      userDocument = user;
+      res.render('profile/main', userDocument);
     })
     .catch((error) => {
       console.log(`Error while getting user profile: ${error}`);

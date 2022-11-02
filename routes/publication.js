@@ -13,11 +13,12 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage: storage });
 
-const User = require('../models/user');
-const Profile = require('../models/profile');
-const Publication = require('../models/publication');
-const Comment = require('../models/comment');
-const Follow = require('../models/follow');
+const User = require('./../models/user');
+const Profile = require('./../models/profile');
+const History = require('./../models/history');
+const Publication = require('./../models/publication');
+const Comment = require('./../models/comment');
+const Follow = require('./../models/follow');
 
 const router = new Router();
 
@@ -111,6 +112,8 @@ router.get('/:id', (req, res, next) => {
       });
     })
     .then((article) => {
+      article.createdLocalDate = article.createdAt.toLocaleDateString();
+      article.createdLocalTime = article.createdAt.toLocaleTimeString();
       article.isOwn = req.user
         ? String(req.user.id) === String(article.author._id)
         : false;
@@ -132,6 +135,32 @@ router.get('/:id', (req, res, next) => {
         };
       });
       res.render('publications/details', { article: publication, comments });
+    })
+    .then(() => {
+      //*✅If a user is viewing article by its ID he creates a reading history document in DB for that.
+      return req.user
+        ? History.findOne({ user: req.user.id, publication: publicationId })
+        : null;
+    })
+    .then((result) => {
+      //*✅create read history if there isn't one | don't create read-history if user is not authenticated.
+      if (!req.user) {
+        return;
+      } else if (!result) {
+        console.log(
+          `no history for article&user! result: ${result} | Creating new history entry: `
+        );
+        return History.create({
+          publication: publicationId,
+          user: req.user.id
+        });
+      } else {
+        //*✅This increments __v & updates the time - for a how often and when the article was read by the User an when.
+        return History.findOneAndUpdate(
+          { user: req.user.id, publication: publicationId },
+          { $inc: { __v: 1 } }
+        );
+      }
     })
     .catch((error) => {
       console.log(`Error getting publication(article) from DB: ${error}`);

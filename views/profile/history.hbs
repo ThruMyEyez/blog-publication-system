@@ -1,0 +1,13 @@
+<div class="container">
+  <h1>My read history</h1>
+  <ul>
+    {{#each history}}
+      <li>
+        <p>title: <b>{{publication.title}}</b></p>
+        <p>read <b>{{__v}}</b> times </p>
+        <p>read on {{lastReadDate}} at {{lastReadTime}}</p>
+      </li>
+      {{ist}}
+    {{/each}}
+  </ul>
+</div>

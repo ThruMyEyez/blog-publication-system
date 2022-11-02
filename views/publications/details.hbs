@@ -1,12 +1,16 @@
 <main class="container">
 
-  <h3 class="my-3">Article details</h3>
+  <!--<h3 class="my-3">Article details</h3> -->
 
   <article>
-    
+
     <h3 class="my-3">{{article.title}}</h3>
-    <p>Article by: <img src="{{article.author.avatarUrl}}" alt="author avatar" width="32" height="32" class="rounded-circle mx-2 border border-dark" /> <strong>{{article.author.profile.fullName}}</strong> aka <strong>{{article.author.username}}</strong></p>
-    <p>Published at: {{article.createdAt}} | views:&nbsp;<strong></strong>{{article.numberOfViews}}</strong></p>
+    <p>Article by:
+      <a class="text-reset" href="/profile/{{article.author.id}}">
+        <img src="{{article.author.avatarUrl}}" alt="author avatar" width="32" height="32" class="rounded-circle mx-2 border border-dark" /> 
+        <strong>{{article.author.profile.fullName}}</strong> aka <strong>{{article.author.username}}</strong>
+      </a>
+    </p><p>Published at: {{article.createdLocalDate}} | views:&nbsp;<strong></strong>{{article.numberOfViews}}</strong></p>
     
     {{#if article.isOwn}}
       <a href="/articles/{{article._id}}/delete">delete this article!</a>
