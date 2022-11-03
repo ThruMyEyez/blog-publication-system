@@ -221,6 +221,7 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 router.get('/my-comments', routeGuard, (req, res, next) => {
   Comment.find({ author: req.user._id })
     .sort({ createdAt: -1 })
+    .populate({ path: 'author', select: 'username avatarUrl' })
     .then((userComments) => {
       console.log(`router.get('/my-comments', ... : ${userComments}`);
       res.render('profile/comments', { userComments });

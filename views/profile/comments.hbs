@@ -1,7 +1,67 @@
-<div class="container">
+<section class="">
+  <div class="container my-5 py-5">
 
-  <div>
-    <h3 class="">My comments: </h3>
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-12 col-lg-10">
+        <div class="card text-dark">
+          <h4 class="mx-3 mb-0">My Recent comments</h4>
+          <p class="mx-3 fw-light mb-4 pb-2">Latest Comments sorted by creation
+            date</p>
+
+          <!-- #each comment card -->
+          {{#each userComments}}
+            <div class="card-body p-4">
+              <div class="d-flex flex-start">
+                <img
+                  class="rounded-circle shadow-1-strong me-3"
+                  src="{{author.avatarUrl}}"
+                  alt="avatar"
+                  width="60"
+                  height="60"
+                />
+                <div>
+                  <h6 class="fw-bold mb-1"> {{author.username}} </h6>
+                  <div class="d-flex align-items-center mb-3">
+                    <p class="mb-0">
+                      {{!TODO createdAt.toLocalTime/Date}}
+                      November 03, 2022
+                      {{#if isApproved}}
+                        {{! <span class="badge bg-success">Approved</span> }}
+                        <form
+                          action="/articles/{{publication._id}}/comment/{{_id}}/edit"
+                          method="POST"
+                        >
+                          <button class="mx-3 btn btn-primary btn-sm">edit
+                            comment</button>
+                        </form>
+                      {{else}}
+                        <span class="mx-3 badge bg-danger">Banned Comment</span>
+                      {{/if}}
+                    </p>
+
+                    <a href="#!" class="link-muted"><i
+                        class="fas fa-pencil-alt ms-2"
+                      ></i></a>
+                    <a href="#!" class="link-muted"><i
+                        class="fas fa-redo-alt ms-2"
+                      ></i></a>
+                    <a href="#!" class="link-muted"><i
+                        class="fas fa-heart ms-2"
+                      ></i></a>
+
+                  </div>
+                  <h5 class="fw-bold">{{title}}</h5>
+                  <p class="mx-4 mb-0">{{message}}</p>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-0" />
+          {{/each}}
+          <!-- end of comment card -->
+        </div>
+      </div>
+    </div>
   </div>
 
-</div>
+</section>
