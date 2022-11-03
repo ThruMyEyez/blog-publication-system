@@ -16,6 +16,7 @@ const User = require('./../models/user');
 const Profile = require('./../models/profile');
 const Follow = require('./../models/follow');
 const History = require('./../models/history');
+const Comment = require('./../models/comment');
 const { Schema } = require('mongoose');
 const routeGuard = require('../middleware/route-guard');
 
@@ -124,7 +125,7 @@ router.get('/delete', routeGuard, (req, res, next) => {
   res.render('profile/delete');
 });
 
-//TODO W.I.P.
+//TODO Route is okay so far - view logic needs major improvement
 router.post('/delete', routeGuard, (req, res, next) => {
   const { id } = req.user;
   let profileID;
@@ -215,9 +216,18 @@ router.get('/my-history', routeGuard, (req, res, next) => {
     });
 });
 
-//TODO: get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
-router.get('/my-comments', (req, res, next) => {
-  console.log("router.get('/my-comments', ... ");
+//DONE:✅ get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
+//* So far, so god ✅ TODO: Render logic, Pagination logic
+router.get('/my-comments', routeGuard, (req, res, next) => {
+  Comment.find({ author: req.user._id })
+    .sort({ createdAt: -1 })
+    .then((userComments) => {
+      console.log(`router.get('/my-comments', ... : ${userComments}`);
+      res.render('profile/comments', { userComments });
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 //*Tasks to do =>
