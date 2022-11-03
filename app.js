@@ -18,7 +18,7 @@ const authenticationRouter = require('./routes/authentication');
 const profileRouter = require('./routes/profile');
 const publicationRouter = require('./routes/publication');
 const hbs = require('hbs');
-
+const paginateHelper = require('express-handlebars-paginate');
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +28,7 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 hbs.registerHelper('ifEqual', function (a, b, options) {
   return a === b ? options.fn(this) : options.inverse(this);
 });
+hbs.registerHelper('paginateHelper', paginateHelper.createPagination);
 
 app.use(serveFavicon(path.join(__dirname, 'public/images', 'favicon.ico')));
 app.use(

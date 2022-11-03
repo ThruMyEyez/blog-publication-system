@@ -19,6 +19,7 @@ const History = require('./../models/history');
 const Comment = require('./../models/comment');
 const { Schema } = require('mongoose');
 const routeGuard = require('../middleware/route-guard');
+const { count } = require('../models/publication');
 
 const router = new Router();
 
@@ -218,13 +219,28 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 
 //DONE:✅ get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
 //* So far, so god ✅ TODO: Render logic, Pagination logic
-router.get('/my-comments', routeGuard, (req, res, next) => {
+router.get('/my-comments/', routeGuard, (req, res, next) => {
+  let perPage = 5,
+    page = req.query.page, //|| 2,
+    totalNoRows = 20;
+  //console.log(req.params.page);
+  // page = req.params.page > 0 ? req.params.page : 0;
   Comment.find({ author: req.user._id })
     .sort({ createdAt: -1 })
+    .skip(perPage * page)
+    .limit(perPage)
     .populate({ path: 'author', select: 'username avatarUrl' })
+    .exec((error, userComments) => {
+      Comment.count().exec(error, count);
+    })
     .then((userComments) => {
-      console.log(`router.get('/my-comments', ... : ${userComments}`);
-      res.render('profile/comments', { userComments });
+      //console.log(`router.get('/my-comments', ... : ${userComments.length}`);
+      totalNoRows = userComments.length;
+      res.render('profile/comments', {
+        userComments,
+        pagination: { page: page, limit: perPage, totalRows: totalNoRows }
+      });
+      //res.render('renderViewHTML', { pagination: { page: currentPage, limit:PageLimit,totalRows: TotalNoOfROWS }});
     })
     .catch((error) => {
       next(error);

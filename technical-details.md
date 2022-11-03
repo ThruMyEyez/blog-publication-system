@@ -96,7 +96,7 @@
 - Registration / Log-in / Log-out:
 
   - app.use('/authentication', authenticationRouter)
-    - GET -> router.get('/sign-up', (req, res, next) => {}) (need improvement) (Artur, Mojeeb)
+    - GET -> router.get('/sign-up', (req, res, next) => {}) (need improvement (check DB if user exists already)) (Artur, Mojeeb)
     - POST -> router.post('/sign-up', ... (need improvement) (Artur, Mojeeb)
     - GET -> router.get('/sign-in', ... (finished)
     - POST -> router.post('/sign-in', ... (finished)
