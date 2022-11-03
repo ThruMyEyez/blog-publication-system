@@ -1,0 +1,51 @@
+<div class="container">
+
+  {{! If the user is following a author, then display list of followed authors }}
+  {{#if follows.length}}
+    <div class="d-flex flex-column">
+      <h3 class="">Following {{follows.length}} Authors: </h3>
+
+      {{#each follow}}
+        tokenId:
+        {{_id}}
+        Followed authorId:
+        {{followee}}
+      {{/each}}
+    </div>
+
+  {{else}}
+    {{! if }}
+    <div class="d-flex flex-column">
+      <h4 class="mx-auto m-3">You're currently don't follow any author.</h4>
+      <b class="align-self-end">Curious about Web development?</b>
+      <p class="align-self-end">Read 100th's of topic related Articles and
+        follow famous Authors</p>
+      <b class="mx-3">Or do you want to share you're knowledge and wisdom?</b>
+      <p class="mx-3">Complete your Profile and start publishing Today to a
+        broad audience.</p>
+    </div>
+  {{/if}}
+  <div>
+    <h3 class="">Followed by: </h3>
+  </div>
+  {{! If the user is followed by readers, then display list of them }}
+  {{#if followers.length}}
+    <p>isFollowed by {{followers.length}} readers: </p>
+    {{#each followers}}
+      <img
+        src="{{follower.avatarUrl}}"
+        alt="user avatar"
+        style="height: 24px; width: 24px;"
+      />
+      {{follower.username}}
+    {{/each}}
+  {{else}}
+    {{#if isAuthor}}
+      {{! if user is not author, suggest him to write more articles or to become an author}}
+      <p>Nobody is following you. Start publishing articles and get followers!</p>
+    {{else}}
+      <p>Get your profile complete to publish articles and get followers!</p>
+    {{/if}}
+  {{/if}}
+  {{note}}
+</div>

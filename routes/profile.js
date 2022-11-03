@@ -148,18 +148,38 @@ router.post('/delete', routeGuard, (req, res, next) => {
     });
 });
 
-//TODO Add a view logic for this route
+//TODO Add a view logic for this route / Pagination
+//* So far, so god ✅
 router.get('/follow-list', routeGuard, (req, res, next) => {
   //* control the following logic on one page reachable by this route
+  //* if auth. user then get a list of authors which are followed by the user.
+  //* sort this list By date.
+  let follows;
+  let isAuthor;
   Follow.find({ follower: req.user._id })
     .then((followings) => {
-      res.render('profile/follow-list', followings);
+      follows = followings;
+      //console.log('follows: ', follows);
+      return User.findById(req.user._id);
+    })
+    .then((user) => {
+      const { userType, isProfileComplete } = user;
+      isAuthor = userType === 'author' && isProfileComplete;
+      if (isAuthor) {
+        return Follow.find({ followee: req.user._id }).populate('follower');
+      }
+      return;
+    })
+    .then((followers) => {
+      //console.log('Followers: ', followers);
+      res.render('profile/followList', { follows, followers, isAuthor });
     })
     .catch((error) => {
       next(error);
     });
 });
-//* So far, so god ✅
+
+//* So far, so god ✅ TODO: Render logic
 router.get('/my-history', routeGuard, (req, res, next) => {
   const { id } = req.user;
   History.find({ user: id })
@@ -193,6 +213,17 @@ router.get('/my-history', routeGuard, (req, res, next) => {
     .catch((error) => {
       next(error);
     });
+});
+
+//TODO: get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
+router.get('/my-comments', (req, res, next) => {
+  console.log("router.get('/my-comments', ... ");
+});
+
+//*Tasks to do =>
+//??? I dont know if this route makes much sense - instead render about me Txt into profile/main
+router.get('/about-me', (req, res, next) => {
+  console.log("router.get('/about-me', (req, res, next) => {})");
 });
 
 //* So far, so god ✅
@@ -248,12 +279,6 @@ router.post('/:id/unfollow', routeGuard, (req, res, next) => {
       next(error);
     });
 });
-
-//TODO: get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
-router.get('/my-comments', (req, res, next) => {});
-
-//*Tasks to do =>
-router.get('/about-me', (req, res, next) => {});
 
 module.exports = router;
 // router.post('/sign-up', (req, res, next) => {
