@@ -196,7 +196,6 @@ router.get('/my-history', routeGuard, (req, res, next) => {
     })
     .then((history) => {
       //* Process meta data to each read history entry
-
       history = history.map((entry) => {
         const lastReadDate =
           new Date().toLocaleDateString() ===
@@ -210,7 +209,6 @@ router.get('/my-history', routeGuard, (req, res, next) => {
         };
       });
       //console.log('read history of user: ', history);
-      res.render('profile/history', { history });
     })
     .catch((error) => {
       next(error);
@@ -221,10 +219,9 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 //* So far, so god ✅ TODO: Render logic, Pagination logic
 router.get('/my-comments/', routeGuard, (req, res, next) => {
   let perPage = 5,
-    page = +req.query.page;
+    page = req.query.page ? +req.query.page : 1;
   let totalNoRows;
-  //console.log(req.params.page);
-  // page = req.params.page > 0 ? req.params.page : 0;
+  //page = req.params.page > 0 ? req.params.page : 0;
   let userComments;
   Comment.find({ author: req.user._id })
     .sort({ createdAt: -1 })

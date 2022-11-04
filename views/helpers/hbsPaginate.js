@@ -1,6 +1,6 @@
 'use strict';
 
-//TODO confine the numbers before and after active page number and prevent with that way that we display much page numbers
+//TODO confine the numbers before and after active page number and prevent that we display to many page numbers
 
 const createPagination = (pagination, options) => {
   if (!pagination) return '';
