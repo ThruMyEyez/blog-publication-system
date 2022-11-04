@@ -1,16 +1,17 @@
-<div class="mx-3 p-3" aria-label="...">
-  <ul class="pagination">
-    <li class="page-item disabled">
-      <a class="page-link">Previous</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active" aria-current="page">
-      <a class="page-link" href="#">2</a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
-    </li>
-  </ul>
-</div>
-{{{paginateHelper pagination}}}
+{{! bootstrap paginator classes => optionElementClass="mx-auto etc..." }}
+{{! bootstrap paginator control buttons => 
+    optionText="last page" }}
+{{{paginator
+  pagination
+  ulElementClass="pagination mx-auto my-3"
+  liElementClass="btn btn-secondary"
+  liDisabledElementClass="btn btn-secondary btn-outline-secondary"
+  liActivePageClass="btn btn-warning"
+  liElementPageClass="btn btn-secondary"
+  aElementClass="text-reset text-decoration-none"
+  aActiveElementClass="text-reset text-decoration-none"
+  firstText="first"
+  lastText="last"
+  prevText="<<"
+  nextText=">>"
+}}}

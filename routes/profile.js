@@ -221,30 +221,44 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 //* So far, so god ✅ TODO: Render logic, Pagination logic
 router.get('/my-comments/', routeGuard, (req, res, next) => {
   let perPage = 5,
-    page = req.query.page, //|| 2,
-    totalNoRows = 20;
+    page = +req.query.page;
+  let totalNoRows;
   //console.log(req.params.page);
   // page = req.params.page > 0 ? req.params.page : 0;
+  let userComments;
   Comment.find({ author: req.user._id })
     .sort({ createdAt: -1 })
-    .skip(perPage * page)
+    .skip(perPage * (page - 1))
     .limit(perPage)
     .populate({ path: 'author', select: 'username avatarUrl' })
-    .exec((error, userComments) => {
-      Comment.count().exec(error, count);
-    })
-    .then((userComments) => {
-      //console.log(`router.get('/my-comments', ... : ${userComments.length}`);
-      totalNoRows = userComments.length;
-      res.render('profile/comments', {
-        userComments,
-        pagination: { page: page, limit: perPage, totalRows: totalNoRows }
+    .exec((err, comments) => {
+      userComments = comments;
+      //Comment.count().exec((error, count) => {
+      Comment.countDocuments({ author: req.user._id }, (error, count) => {
+        totalNoRows = count;
+        res.render('profile/comments', {
+          userComments,
+          pagination: {
+            cra: 21,
+            page: page,
+            limit: perPage,
+            totalRows: count
+          }
+        });
       });
-      //res.render('renderViewHTML', { pagination: { page: currentPage, limit:PageLimit,totalRows: TotalNoOfROWS }});
-    })
-    .catch((error) => {
-      next(error);
     });
+  //.then((userComments) => {
+  //  //console.log(`router.get('/my-comments', ... : ${userComments.length}`);
+  //  //totalNoRows = userComments.length;
+  //  res.render('profile/comments', {
+  //    userComments,
+  //    pagination: { page: page, limit: perPage, totalRows: totalNoRows }
+  //  });
+  //res.render('renderViewHTML', { pagination: { page: currentPage, limit:PageLimit,totalRows: TotalNoOfROWS }});
+  //})
+  //.catch((error) => {
+  //  next(error);
+  //});
 });
 
 //*Tasks to do =>
