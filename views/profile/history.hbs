@@ -1,10 +1,11 @@
 {{> profileTabnav}}
 
+
 <div class="container">
-  <h1>My read history</h1>
-  <ul>
+  <h3 class="m-2 ">My read history</h3>
+  <ul class="list-group">
     {{#each readHistory}}
-      <li>
+      <li class="list-group-item">
         <p>title: <b>{{publication.title}}</b></p>
         <p>read <b>{{__v}}</b> times </p>
         <p>read on {{lastReadDate}} at {{lastReadTime}}</p>
@@ -19,4 +20,18 @@
       {{ist}}
     {{/each}}
   </ul>
+  {{{paginator
+    pagination
+    ulElementClass="pagination mx-auto my-3"
+    liElementClass="btn btn-secondary"
+    liDisabledElementClass="btn btn-secondary btn-outline-secondary"
+    liActivePageClass="btn btn-warning"
+    liElementPageClass="btn btn-secondary"
+    aElementClass="text-reset text-decoration-none"
+    aActiveElementClass="text-reset text-decoration-none"
+    firstText="first"
+    lastText="last"
+    prevText="<<"
+    nextText=">>"
+  }}}
 </div>

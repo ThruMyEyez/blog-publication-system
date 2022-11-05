@@ -194,8 +194,10 @@ router.get('/follow-list', routeGuard, (req, res, next) => {
 
 //* So far, so god ✅ TODO: Render logic
 router.get('/my-history', routeGuard, (req, res, next) => {
-  const { id } = req.user;
-  let readHistory;
+  const { id, username } = req.user;
+  let readHistory,
+    perPage = 5,
+    page = req.query.page ? +req.query.page : 1;
 
   History.find({ user: id })
     .populate({
@@ -207,6 +209,9 @@ router.get('/my-history', routeGuard, (req, res, next) => {
         populate: { path: 'profile', select: 'fullName' }
       }
     })
+    .sort({ createdAt: -1 })
+    .skip(perPage * (page - 1))
+    .limit(perPage)
     .then((history) => {
       //* Process meta data to each read history entry
       history = history.map((entry) => {
@@ -221,15 +226,18 @@ router.get('/my-history', routeGuard, (req, res, next) => {
           lastReadTime: entry.updatedAt.toLocaleTimeString()
         };
       });
-      //  console.log('read history of user: ', history);
       readHistory = history;
-
-      return User.findById(id, 'username -_id');
+      // console.log('read history of user: ', readHistory);
+      return History.count({ user: id });
     })
-    .then((name) => {
-      const { username } = name;
+    .then((rows) => {
       res.render('profile/history', {
         readHistory,
+        pagination: {
+          page: page,
+          limit: perPage,
+          totalRows: rows
+        },
         username,
         isOwnProfile: true,
         actReadHisTab: 'active'
@@ -245,15 +253,12 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 //* So far, so god ✅ TODO: Render logic, Pagination logic
 router.get('/my-comments/', routeGuard, (req, res, next) => {
   // Let variables for Pagination and UI functionality.
+  const { username } = req.user;
   let perPage = 5,
     page = req.query.page ? +req.query.page : 1,
     totalNoRows,
-    username,
     userComments;
   //page = req.params.page > 0 ? req.params.page : 0;
-  User.findById(req.user._id, 'username -_id').then((name) => {
-    username = name.username;
-  });
   Comment.find({ author: req.user._id })
     .sort({ createdAt: -1 })
     .skip(perPage * (page - 1))
@@ -267,7 +272,6 @@ router.get('/my-comments/', routeGuard, (req, res, next) => {
         res.render('profile/comments', {
           userComments,
           pagination: {
-            cra: 21,
             page: page,
             limit: perPage,
             totalRows: count
