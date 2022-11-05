@@ -253,6 +253,7 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 //* So far, so god ✅ TODO: Render logic, Pagination logic
 router.get('/my-comments/', routeGuard, (req, res, next) => {
   // Let variables for Pagination and UI functionality.
+
   const { username } = req.user;
   let perPage = 5,
     page = req.query.page ? +req.query.page : 1,
@@ -294,6 +295,23 @@ router.get('/my-comments/', routeGuard, (req, res, next) => {
   //.catch((error) => {
   //  next(error);
   //});
+});
+
+router.get('/my-comments/delete', routeGuard, (req, res, next) => {
+  const { id: commentId } = req.query;
+  console.log('/my-comments/delete,:', commentId);
+  Comment.findByIdAndUpdate(
+    commentId,
+    { title: 'comment removed', message: 'comment removed by user' },
+    { new: true }
+  )
+    .then((result) => {
+      console.log(result);
+      res.redirect('/profile/my-comments');
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 
 //*Tasks to do =>

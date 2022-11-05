@@ -23,7 +23,14 @@
           <a
             class="text-reset fw-bold"
             href="/profile/{{author._id}}"
-          >{{author.username}}</a></p>
+          >{{author.username}}</a>
+          <img
+            class="border rounded-circle"
+            src="{{author.avatarUrl}}"
+            alt=""
+            style="width: 24px;"
+          />
+        </p>
 
         {{#if authenticatedViewer}}
           {{#ifEqual author.id viewerId}}
