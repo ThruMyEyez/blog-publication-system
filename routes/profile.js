@@ -38,10 +38,14 @@ router.get('/edit', routeGuard, (req, res, next) => {
     res.redirect('/authentication/sing-in');
   }
   User.findById(req.user._id)
-    .populate('profile')
+    //.populate('profile')
     .then((user) => {
-      //console.log(user);
-      res.render('profile/edit', user);
+      console.log({ ...user._doc });
+      res.render('profile/edit', {
+        ...user._doc,
+        isOwnProfile: true,
+        actEditProfileTab: 'active'
+      });
     })
     .catch((error) => {
       console.log(`Error loading user profile from DB: ${error}`);
@@ -156,25 +160,31 @@ router.get('/follow-list', routeGuard, (req, res, next) => {
   //* control the following logic on one page reachable by this route
   //* if auth. user then get a list of authors which are followed by the user.
   //* sort this list By date.
-  let follows;
-  let isAuthor;
+  let follows, isAuthor, username;
   Follow.find({ follower: req.user._id })
     .then((followings) => {
       follows = followings;
-      //console.log('follows: ', follows);
+
       return User.findById(req.user._id);
     })
     .then((user) => {
       const { userType, isProfileComplete } = user;
       isAuthor = userType === 'author' && isProfileComplete;
+      username = user.username;
       if (isAuthor) {
         return Follow.find({ followee: req.user._id }).populate('follower');
       }
       return;
     })
     .then((followers) => {
-      //console.log('Followers: ', followers);
-      res.render('profile/followList', { follows, followers, isAuthor });
+      res.render('profile/followList', {
+        follows,
+        followers,
+        isAuthor,
+        username,
+        isOwnProfile: true,
+        actFollowTab: 'active'
+      });
     })
     .catch((error) => {
       next(error);
@@ -184,6 +194,8 @@ router.get('/follow-list', routeGuard, (req, res, next) => {
 //* So far, so god ✅ TODO: Render logic
 router.get('/my-history', routeGuard, (req, res, next) => {
   const { id } = req.user;
+  let readHistory;
+
   History.find({ user: id })
     .populate({
       path: 'publication',
@@ -208,9 +220,22 @@ router.get('/my-history', routeGuard, (req, res, next) => {
           lastReadTime: entry.updatedAt.toLocaleTimeString()
         };
       });
-      //console.log('read history of user: ', history);
+      //  console.log('read history of user: ', history);
+      readHistory = history;
+
+      return User.findById(id, 'username -_id');
+    })
+    .then((name) => {
+      const { username } = name;
+      res.render('profile/history', {
+        readHistory,
+        username,
+        isOwnProfile: true,
+        actReadHisTab: 'active'
+      });
     })
     .catch((error) => {
+      console.log(`error getting read history of user from DB. ${error}`);
       next(error);
     });
 });
@@ -218,11 +243,16 @@ router.get('/my-history', routeGuard, (req, res, next) => {
 //DONE:✅ get a list off all comments of user && sort({ createdAt: -1 }) && render it: res.render("profile/comments", {myCommentsObj})
 //* So far, so god ✅ TODO: Render logic, Pagination logic
 router.get('/my-comments/', routeGuard, (req, res, next) => {
+  // Let variables for Pagination and UI functionality.
   let perPage = 5,
-    page = req.query.page ? +req.query.page : 1;
-  let totalNoRows;
+    page = req.query.page ? +req.query.page : 1,
+    totalNoRows,
+    username,
+    userComments;
   //page = req.params.page > 0 ? req.params.page : 0;
-  let userComments;
+  User.findById(req.user._id, 'username -_id').then((name) => {
+    username = name.username;
+  });
   Comment.find({ author: req.user._id })
     .sort({ createdAt: -1 })
     .skip(perPage * (page - 1))
@@ -240,7 +270,10 @@ router.get('/my-comments/', routeGuard, (req, res, next) => {
             page: page,
             limit: perPage,
             totalRows: count
-          }
+          },
+          username,
+          isOwnProfile: true,
+          actCommentHisTab: 'active'
         });
       });
     });
@@ -278,6 +311,7 @@ router.get('/:id', (req, res, next) => {
       user.createdLocalTime = createdAt.toLocaleTimeString();
       user.actualLocalDate = new Date().toLocaleDateString();
       user.isOwnProfile = req.user ? req.user.id === id : false;
+      user.actProfileTab = 'active';
       userDocument = user;
       res.render('profile/main', userDocument);
     })

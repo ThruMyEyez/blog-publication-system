@@ -1,7 +1,9 @@
+{{> profileTabnav}}
+
 <div class="container">
   <h1>My read history</h1>
   <ul>
-    {{#each history}}
+    {{#each readHistory}}
       <li>
         <p>title: <b>{{publication.title}}</b></p>
         <p>read <b>{{__v}}</b> times </p>

@@ -1,0 +1,40 @@
+{{#if isOwnProfile}}
+  <ul class="nav nav-tabs mt-3 mb-2">
+    <li class="nav-item">
+      <a
+        href="/profile/{{_id}}"
+        class="nav-link {{actProfileTab}}"
+      >{{username}}'s Profile</a>
+    </li>
+    <li class="nav-item">
+      <a href="/profile/my-history" class="nav-link {{actReadHisTab}}">Last read
+        Articles</a>
+    </li>
+    <li class="nav-item">
+      <a
+        href="/profile/my-comments"
+        class="nav-link {{actCommentHisTab}}"
+      >Comment history</a>
+    </li>
+    <li class="nav-item">
+      <a href="/profile/follow-list" class="nav-link {{actFollowTab}}">Follow
+        list</a>
+    </li>
+    <li class="nav-item">
+      <a href="/profile/edit" class="nav-link {{actEditProfileTab}}">Edit
+        Profile</a>
+    </li>
+  </ul>
+{{else}}
+  <ul class="nav nav-tabs mt-3 mb-2">
+    <li class="nav-item">
+      <a
+        href="/profile/{{_id}}"
+        class="nav-link {{actProfileTab}}"
+      >{{username}}'s Profile</a>
+    </li>
+    <li class="nav-item">
+      <a href="/authentication/sign-in" class="nav-link">Log in</a>
+    </li>
+  </ul>
+{{/if}}
