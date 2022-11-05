@@ -15,6 +15,7 @@ const publicationSchema = new Schema(
       minLength: 3,
       maxLength: 160
     },
+    thumbnailUrl: { type: String, default: '/images/default_thumbnail.jpg' },
     categories: {
       type: [String]
     },

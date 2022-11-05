@@ -10,7 +10,6 @@ const multer = require('multer');
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary.v2
 });
-
 const upload = multer({ storage: storage });
 
 const User = require('./../models/user');
@@ -52,6 +51,7 @@ router.get('/', (req, res, next) => {
               : false;
         });
       });
+      console.log(publications);
       res.render('publications/main', { articles: publications });
     })
     .catch((error) => {
@@ -79,7 +79,7 @@ router.get('/create', (req, res, next) => {
 });
 
 //* So far, so god ✅
-router.post('/create', (req, res, next) => {
+router.post('/create', upload.single('thumbnailUrl'), (req, res, next) => {
   //* Author create new Article
   req.body.numberOfViews = 0;
   Publication.create({ author: req.user._id, ...req.body })
@@ -114,14 +114,16 @@ router.get('/:id', (req, res, next) => {
     .then((article) => {
       article.createdLocalDate = article.createdAt.toLocaleDateString();
       article.createdLocalTime = article.createdAt.toLocaleTimeString();
+      article.readerAuthenticated = !!req.user;
       article.isOwn = req.user
         ? String(req.user.id) === String(article.author._id)
         : false;
       publication = article;
-      return Comment.find({ publication: `${publicationId}` }).populate(
-        //'author'
-        { path: 'author', select: 'username avatarUrl' } //[{}]
-      );
+
+      return Comment.find({ publication: `${publicationId}` }).populate({
+        path: 'author',
+        select: 'username avatarUrl'
+      });
     })
     .then((comments) => {
       comments = comments.map((comment) => {

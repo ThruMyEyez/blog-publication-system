@@ -1,0 +1,56 @@
+<div class="row">
+  {{#each articles}}
+    <div class="card m-2" style="width:420px">
+      <a href="/articles/{{_id}}" class="text-decoration-none text-reset">
+        <img
+          class="card-img-top"
+          src="{{thumbnailUrl}}"
+          alt="Card image"
+          style="width:100%"
+        />
+      </a>
+      <div class="card-body">
+        <h4 class="card-title">{{title}}</h4>
+        <p class="card-text">Category:
+          {{#each categories}}<span>{{this}}</span>{{/each}}</p>
+        <p>He we could place the first 2 sentences from the article itself..</p>
+        <a href="/articles/{{_id}}" class="btn btn-primary">Read Article</a>
+      </div>
+      <div class="card-footer">
+
+        <small class="text-muted">Viewed {{numberOfViews}} times</small>
+        <p class="my-0 mx-3 p-0">Written by
+          <a
+            class="text-reset fw-bold"
+            href="/profile/{{author._id}}"
+          >{{author.username}}</a></p>
+
+        {{#if authenticatedViewer}}
+          {{#ifEqual author.id viewerId}}
+            <a
+              class="btn btn-outline-secondary btn-sm d-inline border-0 border-top"
+              href="/articles/{{_id}}/edit"
+            >edit Article</a>
+          {{else}}
+            {{#if isFollowed}}
+              <!-- if reader is already following then show "unfollow" btn -->
+              <form action="/profile/{{author._id}}/unfollow" method="post">
+                <button class="btn mx-3 btn-outline-secondary">unfollow Author</button>
+              </form>
+            {{else}}
+              <form
+                class=""
+                action="/profile/{{author._id}}/follow"
+                method="post"
+              >
+                <button class="btn mx-3 btn-outline-secondary">follow Author</button>
+              </form>
+            {{/if}}
+
+          {{/ifEqual}}
+        {{/if}}
+
+      </div>
+    </div>
+  {{/each}}
+</div>
