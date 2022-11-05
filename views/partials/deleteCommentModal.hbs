@@ -1,0 +1,49 @@
+{{#ifEqual message "comment removed by user"}}
+  <p>deleted</p>
+{{else}}
+
+  <button
+    type="button"
+    class="btn btn-sm btn-warning"
+    onclick="openModal()"
+  >remove</button>
+  <div
+    class="modal fade"
+    id="delete-comment-modal"
+    tabindex="-1"
+    aria-labelledby="delete-comment-modlabel"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="delete-comment-modlabel">Confirm delete</h5>
+        </div>
+        <div class="modal-body">
+          <strong>Are you sure you want to delete this comment?</strong>
+          <p>This action <strong>cannot</strong> be undone!</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            onclick="closeModal()"
+          >Close</button>
+          <a
+            href="/profile/my-comments/delete?id={{_id}}"
+            type="button"
+            class="btn btn-danger btn-sm"
+          >remove comment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal-backdrop fade show"
+    id="backdrop"
+    style="display: none;"
+  ></div>
+
+  <!-- <a href="/profile/my-comments/delete?id={{_id}}" type="button" class="btn btn-danger">remove comment</a> -->
+{{/ifEqual}}
