@@ -126,8 +126,10 @@ router.post(
 //* delete all corresponding comments if reader/author wants to
 //* delete all corresponding follows from DB && History
 router.get('/delete', routeGuard, (req, res, next) => {
-  const { id } = req.user;
-  res.render('profile/delete');
+  req.user.isOwnProfile = true;
+  req.user.actEditProfileTab = 'active';
+  console.log(req.user);
+  res.render('profile/delete', req.user);
 });
 
 //TODO Route is okay so far - view logic needs major improvement
@@ -160,23 +162,22 @@ router.get('/follow-list', routeGuard, (req, res, next) => {
   //* control the following logic on one page reachable by this route
   //* if auth. user then get a list of authors which are followed by the user.
   //* sort this list By date.
-  let follows, isAuthor, username;
+  let follows, isAuthor;
+
   Follow.find({ follower: req.user._id })
     .then((followings) => {
       follows = followings;
 
-      return User.findById(req.user._id);
-    })
-    .then((user) => {
-      const { userType, isProfileComplete } = user;
+      const { userType, isProfileComplete } = req.user;
+
       isAuthor = userType === 'author' && isProfileComplete;
-      username = user.username;
       if (isAuthor) {
         return Follow.find({ followee: req.user._id }).populate('follower');
       }
       return;
     })
     .then((followers) => {
+      const { username } = req.user;
       res.render('profile/followList', {
         follows,
         followers,
