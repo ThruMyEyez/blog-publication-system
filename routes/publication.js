@@ -82,6 +82,11 @@ router.get('/create', (req, res, next) => {
 router.post('/create', upload.single('thumbnailUrl'), (req, res, next) => {
   //* Author create new Article
   req.body.numberOfViews = 0;
+  //If User adds a Thumbnail set it, otherwise use default value.
+  req.body.thumbnailUrl = req.file
+    ? req.file.path
+    : '/images/default_thumbnail.jpg';
+
   Publication.create({ author: req.user._id, ...req.body })
     .then((result) => {
       const publicationId = result._id.toString();

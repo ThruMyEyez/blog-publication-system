@@ -40,7 +40,7 @@ router.get('/edit', routeGuard, (req, res, next) => {
   User.findById(req.user._id)
     //.populate('profile')
     .then((user) => {
-      console.log({ ...user._doc });
+      // console.log({ ...user._doc });
       res.render('profile/edit', {
         ...user._doc,
         isOwnProfile: true,
@@ -59,10 +59,9 @@ router.post(
   routeGuard,
   upload.single('avatarUrl'),
   (req, res, next) => {
-    // req.body.avatarUrl = req.file.path;
-    // }
-    //console.log('POST OF /profile/edit', req.body);
-    //console.log(req.file.path);
+    //If there is a new avatar set it, otherwise keep the old one.
+    req.body.avatarUrl = req.file ? req.file.path : req.user.avatarUrl;
+    //console.log('req.body.avatarUrl :', req.body.avatarUrl);
     User.findByIdAndUpdate(
       req.user.id,
       { ...req.body, $inc: { __v: 1 } },
