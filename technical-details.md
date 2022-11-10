@@ -127,6 +127,7 @@
   - app.use('/publication', publicationRouter)
 
     - GET -> router.get('/', (req, res, next) => {}) (Artur, Mojeeb)
+    - GET -> router.get('/my-own', (req, res, next) => {}) ( Mojeeb)
     - GET -> router.get('/create', (req, res, next) => {}) (Mojeeb)
     - POST-> router.post("/create", (req, res, next) => {}) (Mojeeb)
     - GET -> router.get('/:id/content', (req, res, next) => {}) (Mojeeb)

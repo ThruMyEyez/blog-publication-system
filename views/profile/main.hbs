@@ -1,8 +1,9 @@
 {{> profileTabnav}}
 
 <div class="container">
-  <p>username: {{username}}</p>
-  <p>email: {{email}}</p>
+  <h3>Your Profile Basic Info</h3>
+  <p>Username: {{username}}</p>
+  <p>Email: {{email}}</p>
 
   {{#if emailConfirmed}}
     <p>Your Email is confirmed</p>
@@ -11,7 +12,8 @@
     <a href="#">Send confirmation Email again.</a>
   {{/if}}
 
-  <p>user type: {{userType}}</p>
+<hr>
+  <p>User type: {{userType}}</p>
 
   {{#if isProfileComplete}}
     <!-- here could be a profile partial -->
@@ -23,7 +25,7 @@
       <P><b>Your skills:</b></P>
       <ul class="d-flex list-unstyled">
         {{#each profile.skills}}
-          <li><span>#{{this}}&nbsp;</span></li>
+          <li><span>{{this}}&nbsp;</span></li>
         {{/each}}
       </ul>
     </div>
@@ -60,12 +62,12 @@
     <p>Author profile completed at {{createdAt}}</p>
   {{else}}
     <p>Your profile is set to usertype: {{userType}}</p>
-    <p>if you want to be an Author an be able, to write and publish Articles
+    <p>If you want to be an Author an be able, to write and publish Articles
       your profile has to be filled out complete
     </p>
-    <a href="/profile/complete">complete my author profile now! </a>
+    <a href="/profile/complete">Complete my author profile now! </a>
   {{/if}}
-
+<hr>
   <div>
     <p>Today is the: <strong>{{actualLocalDate}}</strong></p>
     {{#ifEqual createdLocalDate actualLocalDate}}
@@ -85,18 +87,18 @@
     <a
       class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
       href="/profile/edit"
-    >edit profile</a>
+    >Edit profile</a>
     <a
       class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
       href="/profile/follow-list"
-    >my follower list</a>
+    >My follower list</a>
     <a
       class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
       href="/profile/my-comments"
-    >my comment history</a>
+    >My comment history</a>
     <a
       class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
       href="/profile/my-history"
-    >my read history</a>
+    >My read history</a>
   {{/if}}
 </div>

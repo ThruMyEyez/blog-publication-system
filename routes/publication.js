@@ -2,6 +2,8 @@
 
 const { Router } = require('express');
 const routeGuard = require('./../middleware/route-guard');
+const authorGuard = require('./../middleware/author-guard');
+const completedProfileGuard = require('./../middleware/completed-profile-guard');
 
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary');
@@ -18,10 +20,10 @@ const History = require('./../models/history');
 const Publication = require('./../models/publication');
 const Comment = require('./../models/comment');
 const Follow = require('./../models/follow');
+const { BOLG_CATEGORIES_TYPE } = require('./helper/helper');
 
 const router = new Router();
 
-//* So far, so god ✅
 router.get('/', (req, res, next) => {
   //const { id: viewerId } = req.user;
   let publications;
@@ -62,43 +64,90 @@ router.get('/', (req, res, next) => {
     });
 });
 
-//* So far, so god ✅
-router.get('/create', (req, res, next) => {
-  //* Author create new Article
-  //* Helper Array variable with predefined categories.
-  const categories = [
-    'Web development',
-    'E-Commerce',
-    'CSS',
-    'UX Design',
-    'Fronted frameworks',
-    'Databases',
-    'Cybersecurity'
-  ];
-  res.render('publications/create', { categories });
-});
+// This route is to create a blog publication
+router.get(
+  '/create',
+  [routeGuard, authorGuard, completedProfileGuard],
+  (req, res, next) => {
+    res.render('publications/create', { categories: BOLG_CATEGORIES_TYPE });
+  }
+);
 
-//* So far, so god ✅
-router.post('/create', upload.single('thumbnailUrl'), (req, res, next) => {
-  //* Author create new Article
-  req.body.numberOfViews = 0;
-  //If User adds a Thumbnail set it, otherwise use default value.
-  req.body.thumbnailUrl = req.file
-    ? req.file.path
-    : '/images/default_thumbnail.jpg';
+// This route is for creating the a new publication (Article)
+router.post(
+  '/create',
+  [
+    routeGuard,
+    authorGuard,
+    completedProfileGuard,
+    upload.single('thumbnailUrl')
+  ],
+  (req, res, next) => {
+    // If User adds a Thumbnail set it, otherwise use default value.
+    const thumbnailUrl = req.file
+      ? req.file.path
+      : '/images/default_thumbnail.jpg';
+    const numberOfViews = 0;
+    const author = req.user._id;
+    const { title, categories } = req.body;
 
-  Publication.create({ author: req.user._id, ...req.body })
-    .then((result) => {
-      const publicationId = result._id.toString();
-      console.log('article published / added to DB: ', result);
-      res.redirect(`/articles/${publicationId}/content`);
+    Publication.create({
+      author,
+      title,
+      categories,
+      thumbnailUrl,
+      numberOfViews
     })
-    .catch((error) => {
-      console.log(`Error creating new publication(article) to DB: ${error}`);
-      next(error);
-    });
-});
+      .then((result) => {
+        const publicationId = result._id.toString();
+        console.log('New article published / added to DB: ', result);
+        res.redirect(`/articles/${publicationId}/content`);
+      })
+      .catch((error) => {
+        console.log(`Error creating new publication(article) to DB: ${error}`);
+        next(error);
+      });
+  }
+);
 
+router.get(
+  '/my-own',
+  [routeGuard, authorGuard, completedProfileGuard],
+  (req, res, next) => {
+    let publications,
+      perPage = 5,
+      page = req.query.page ? +req.query.page : 1;
+
+    Publication.find()
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage)
+      .populate('author')
+      .then((articles) => {
+        publications = articles;
+        return Publication.count({ user: id });
+      })
+      .then((count) => {
+        pagination = {
+          page: page,
+          limit: perPage,
+          totalRows: count
+        };
+        console.log(publications);
+        console.log(pagination);
+        res.render('publications/my-own', {
+          articles: publications,
+          pagination
+        });
+      })
+      .catch((error) => {
+        console.log(
+          `Error occurred at getting publications (articles) from DB: ${error}`
+        );
+        next(error);
+      });
+  }
+);
 //* 🚩✅ route is tested and works - still some functionality TODO
 router.get('/:id', (req, res, next) => {
   //* Article detail page with comments

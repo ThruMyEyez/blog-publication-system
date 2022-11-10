@@ -7,6 +7,7 @@
     aboutTxt: { type: String, minLength: 10, maxLength: 1024, trim: true } }}
 
 <div class="container pt-5">
+  <h3>Complete your profile here</h3>
   <form action="/profile/complete" method="POST" enctype="multipart/form-data">
     <div class="form-floating mb-3">
       <input
@@ -31,7 +32,7 @@
       <label for="input-age">Your Age</label>
     </div>
 
-    <div class="form-floating">
+    {{! <div class="form-floating">
       <select
         class="form-select"
         id="gender"
@@ -44,7 +45,7 @@
 
       </select>
       <label for="gender">Your Gender</label>
-    </div>
+    </div> }}
 
     <div class="mb-3 mt-3">
       <label for="skills">Please choose your skills</label>
