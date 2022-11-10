@@ -22,7 +22,7 @@
                   height="60"
                 />
                 <div>
-                  <h6 class="fw-bold mb-1"> {{author.username}} </h6>
+                  <a class="text-reset" href="/profile/{{author._id}}"><h6 class="fw-bold mb-1"> {{author.username}} </h6></a>
                   <div class="d-flex align-items-center mb-3">
                     <p class="mb-0">
                       {{!TODO createdAt.toLocalTime/Date}}
@@ -85,7 +85,7 @@ const closeModal = () => {
     document.getElementById("delete-comment-modal").classList.remove("show")
 };
 
-// Get the deleteCommentModal
+// Get the deleteCommentM odal
 const modal = document.getElementById('delete-comment-modal');
 //  close modal when clicked outside the window
 window.onclick = (event) => {

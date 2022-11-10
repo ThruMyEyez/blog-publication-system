@@ -1,4 +1,160 @@
-@import 'css/bootstrap';
+//@import 'css/bootstrap';
+
+@mixin navLink {
+  padding: 8px 5px;
+  margin: 4px auto;
+  width: 85%;
+  min-width: 35px;
+  background-color: rgba($color5, 0.3);
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 1.1em;
+  border-radius: 5px;
+  color: $color1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Ubuntu, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+$color1: #004b63;
+$color2: #121212;
+$color3: #30b8b2;
+$color4: #ff7a4f;
+$color5: #e8e8e6;
+$color6: cadetblue;
+
+html,
+body {
+  height: 100%;
+}
+
+main {
+  height: 100%;
+  margin-left: 86px;
+}
+
+nav {
+  background-color: $color3;
+  width: 70px;
+  height: 100%;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s;
+
+  #menuBtn {
+    background-color: $color2;
+    padding: 10px;
+    cursor: pointer;
+
+    div {
+      border: 2px solid $color4;
+      margin: 4px auto;
+      max-width: 40px;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    &.pressedBtn {
+      .b1 {
+        transform: rotate(45deg);
+        top: 9px;
+      }
+      .b2 {
+        transform: rotate(-45deg);
+      }
+      .b3 {
+        transform: rotate(45deg);
+        top: -7px;
+      }
+    }
+  }
+
+  #navLogo {
+    a {
+      @include navLink();
+    }
+    .linkTitle {
+      display: none;
+    }
+    &:hover {
+      background-color: $color1;
+      color: $color5;
+    }
+  }
+
+  #navLinks {
+    margin-top: auto;
+    margin-bottom: auto;
+    list-style-type: none;
+
+    li {
+      align-self: center;
+      text-align: center;
+
+      button {
+        background: none;
+        border: none;
+        @include navLink();
+
+        .linkTitle {
+          display: none;
+        }
+
+        &:hover {
+          background-color: $color1;
+          color: $color5;
+        }
+      }
+
+      a {
+        @include navLink();
+
+        .linkTitle {
+          display: none;
+        }
+
+        &:hover {
+          background-color: $color1;
+          color: $color5;
+        }
+      }
+    }
+  }
+
+  &.navbarOpen {
+    width: 280px;
+    #navLogo {
+      a {
+      }
+    }
+
+    #navLinks {
+      li {
+        button {
+          .linkTitle {
+            display: inline-block;
+            margin-right: 10px;
+          }
+        }
+        a {
+          .linkTitle {
+            display: inline-block;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
 
 // $font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 // $grey: hsl(0, 0, 90%);

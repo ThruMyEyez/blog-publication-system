@@ -1,16 +1,88 @@
-{{!-- <nav>
-      <a href="/">Home</a>
-      {{#if user}}
-        <a href="/private">{{user.username}}'s Profile</a>
-        <form action="/authentication/sign-out" method="POST">
-          <button>Sign Out</button>
-        </form>
-      {{else}}
-        <a href="/authentication/sign-in">Sign In</a>
-        <a href="/authentication/sign-up">Sign Up</a>
-      {{/if}}
-    </nav> --}}
+<!-- First version of the SCSS Navbar | TODO is to embed round small avatar with profile links as dropDown menu -->
+<nav id="navbar">
+  <!--  menu button  -->
+  <div id="menuBtn" class="" onClick="pressButton()">
+    <div class="b1"></div>
+    <div class="b2"></div>
+    <div class="b3"></div>
+  </div>
 
+  <div id="navLogo">
+    <a href="/">
+      <span class="linkTitle">WebTopics</span>
+      <i class="fa-solid fa-coffee fa-2x"></i>
+    </a>
+  </div>
+
+  <!--  nav links  -->
+  <ul id="navLinks">
+    <li>
+      <a href="/" title="Portal">
+        <span class="linkTitle">Portal</span>
+        <i class="fas fa-home"></i>
+      </a>
+    </li>
+    <li>
+      <a href="/articles" title="Articles">
+        <span class="linkTitle">Articles</span>
+        <i class="fas fa-newspaper"></i>
+      </a>
+    </li>
+    {{#if user}}
+      {{#if user.isProfileComplete}}
+        <!-- new article is logged in user is author -->
+        <li>
+          <a href="/articles/create" title="new Article">
+            <span class="linkTitle">new Article</span>
+            <i class="fa-solid fa-pen-to-square"></i>
+          </a>
+        </li>
+      {{/if}}
+      <!-- Show user profile -->
+
+      <li>
+        <a href="/profile/{{user._id}}">
+          <span class="linkTitle">{{user.username}}'s Profile</span>
+          <i class="fas fa-user"></i>
+        </a>
+      </li>
+
+      <!--  <li> TODO AS Rounded avatar image drop down profile menu!? 
+        <a href="/profile/{{user._id}}">
+          <img
+            src="{{user.avatarUrl}}"
+            style="width: 32px; height: 32px;"
+            alt="user avatar picture"
+          />
+          <span class="linkTitle">{{user.username}}'s Profile</span>
+        </a>
+      </li> -->
+
+      <li>
+        <form action="/authentication/sign-out" method="POST">
+          <button class="logoutBtn"><span class="linkTitle">Log-out</span>
+            <i class="fas fa-sign-out"></i>
+          </button>
+        </form>
+      </li>
+    {{else}}
+      <li>
+        <a href="/authentication/sign-in">
+          <span class="linkTitle">Sign In</span>
+          <i class="fas fa-sign-in"></i>
+        </a>
+      </li>
+
+      <li>
+        <a href="/authentication/sign-up">
+          <span class="linkTitle">Sign Up</span>
+          <i class="fas fa-user-plus"></i>
+        </a>
+      </li>
+    {{/if}}
+  </ul>
+</nav>
+<!--
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">Tech Blog</a>
@@ -29,7 +101,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Portal?</a>
-          <!-- instead of "home" make a portal page for users/ visitors? -->
+      instead of "home" make a portal page for users/ visitors? 
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/articles">Articles</a>
@@ -38,7 +110,7 @@
           <a class="nav-link disabled">Disabled</a>
         </li>
       </ul>
-
+      
       <ul class="navbar-nav d-flex mb-2 mb-lg-0">
         {{#if user}}
           {{#if user.isProfileComplete}}
@@ -84,4 +156,4 @@
       </ul>
     </div>
   </div>
-</nav>
+</nav> -->

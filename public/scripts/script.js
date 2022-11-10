@@ -6,6 +6,10 @@ window.addEventListener(
   false
 );
 
+function pressButton() {
+  document.getElementById('menuBtn').classList.toggle('pressedBtn');
+  document.getElementById('navbar').classList.toggle('navbarOpen');
+}
 //* ???: This is just for testing purpose and no get familiar with it. Can be removed from this line */
 const editor = new EditorJS({
   placeholder: 'Write something awesome here!',
