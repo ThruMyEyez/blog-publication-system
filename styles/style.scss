@@ -1,4 +1,11 @@
-//@import 'css/bootstrap';
+@import 'copied_css';
+
+$color1: #ffffff;
+$color2: #062a6c;
+$color3: #548cff;
+$color4: #ff7a4f;
+$color5: #111111;
+$color6: #548cff;
 
 @mixin navLink {
   padding: 8px 5px;
@@ -21,13 +28,6 @@
   margin: 0;
   padding: 0;
 }
-
-$color1: #004b63;
-$color2: #121212;
-$color3: #30b8b2;
-$color4: #ff7a4f;
-$color5: #e8e8e6;
-$color6: cadetblue;
 
 html,
 body {
@@ -56,7 +56,7 @@ nav {
     cursor: pointer;
 
     div {
-      border: 2px solid $color4;
+      border: 2px solid $color1;
       margin: 4px auto;
       max-width: 40px;
       position: relative;
@@ -159,17 +159,18 @@ nav {
 #footer {
   padding: 21px 0;
   background: $color6;
-  color: $color5;
+  color: $color1;
   text-align: center;
   position: absolute;
   bottom: 0;
   width: 100%;
   left: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
   #footer-social {
     a {
-      display: block;
+      display: inline-block;
       font-size: 1.6em;
       text-align: center;
       color: $color1;
