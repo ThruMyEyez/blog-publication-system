@@ -1,28 +1,28 @@
 {{#if isOwnProfile}}
   <ul class="profile-tabs">
     <li class="tab {{actProfileTab}}">
-      <a href="/profile/{{_id}}" class="nav-link">{{username}}'s Profile</a>
+      <a href="/profile/{{_id}}">{{username}}'s Profile</a>
     </li>
     <li class="tab {{actReadHisTab}}">
-      <a href="/profile/my-history" class="nav-link">Last read Articles</a>
+      <a href="/profile/my-history">Last read Articles</a>
     </li>
     <li class="tab {{actCommentHisTab}}">
-      <a href="/profile/my-comments" class="nav-link">Comment history</a>
+      <a href="/profile/my-comments">Comment history</a>
     </li>
     <li class="tab {{actFollowTab}}">
-      <a href="/profile/follow-list" class="nav-link">Follow list</a>
+      <a href="/profile/follow-list">Follow list</a>
     </li>
     <li class="tab {{actEditProfileTab}}">
-      <a href="/profile/edit" class="nav-link">Edit Profile</a>
+      <a href="/profile/edit">Edit Profile</a>
     </li>
   </ul>
 {{else}}
   <ul class="profile-tabs">
     <li class="tab {{actProfileTab}}">
-      <a href="/profile/{{_id}}" class="nav-link">{{username}}'s Profile</a>
+      <a href="/profile/{{_id}}">{{username}}'s Profile</a>
     </li>
     <li class="tab">
-      <a href="/authentication/sign-in" class="nav-link">Log in</a>
+      <a href="/authentication/sign-in">Log in</a>
     </li>
   </ul>
 {{/if}}
