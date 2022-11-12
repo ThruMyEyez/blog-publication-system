@@ -38,7 +38,9 @@ $fsize2: 1.25rem;
 a {
   text-decoration: none;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 html,
 body {
   position: relative;
@@ -52,6 +54,23 @@ main {
   flex-direction: column;
   align-items: flex-start;
   padding-bottom: 2.65rem;
+}
+
+.scroll-top-btn {
+  position: fixed;
+  right: 2rem;
+  bottom: 4rem;
+  font-size: 2rem;
+  padding: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: $color6;
+  color: $color1;
+  border: none;
+}
+
+.hidden {
+  display: none;
 }
 
 nav {
