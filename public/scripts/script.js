@@ -96,11 +96,11 @@ saveBtn.addEventListener('click', () => {
     .then((editorData) => {
       console.log(editorData);
       //postData(editorData);
-      // return fetch(window.location.pathname, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   content: JSON.stringify(editorData)
-      // });
+      return fetch(window.location.pathname, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        content: JSON.stringify(editorData)
+      });
     })
     .catch((error) => {
       console.log('err: ', error);

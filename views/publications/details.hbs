@@ -16,7 +16,13 @@
       <a href="/articles/{{article._id}}/delete">delete this article!</a>
     {{/if}}    
     
-    <div id="editorjs-content-TODO" class="mx-auto w-75 mh-25 bg-light border border-bottom-0 border-info rounded-top" style="height: 180px;"><p>Here goes the editorjs content for the specific publication</p></div>
+
+    {{#if article.content}}
+    <div class="mt-2 mb-2">{{article.content}}</div>
+    {{else}}
+    <div class="mt-2 mb-2"><p>There is no content saved for this Article</p></div>
+    {{/if}}
+    {{!-- <div id="editorjs-content-TODO" class="mx-auto w-75 mh-25 bg-light border border-bottom-0 border-info rounded-top" style="height: 180px;"><p>Here goes the editorjs content for the specific publication</p></div> --}}
     
     
   </article>

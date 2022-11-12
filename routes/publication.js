@@ -1,5 +1,5 @@
 'use strict';
-
+const express = require('express');
 const { Router } = require('express');
 const routeGuard = require('./../middleware/route-guard');
 const authorGuard = require('./../middleware/author-guard');
@@ -123,7 +123,7 @@ router.get(
       perPage = 5,
       page = req.query.page ? +req.query.page : 1;
 
-    Publication.find()
+    Publication.find({ author: req.user._id })
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage)
@@ -301,11 +301,19 @@ router.get('/:id/content', (req, res, next) => {
 //*ROUTES TO DO
 router.post('/:id/content', (req, res, next) => {
   const { id } = req.params;
-  return Publication.findByIdAndUpdate(
+  console.log('Hi, I am called');
+  console.log(req.body);
+  Publication.findByIdAndUpdate(
     id,
-    { content: req.body.content, publication: publicationId },
+    { content: req.body.body, publication: id },
     { $inc: { __v: 1 } }
-  );
+  )
+    .then((data) => {
+      res.redirect('/articles/' + id);
+    })
+    .catch((error) => {
+      next(error);
+    });
 });
 router.get('/:id/content/edit', (req, res, next) => {});
 router.post('/:id/content/edit', (req, res, next) => {});

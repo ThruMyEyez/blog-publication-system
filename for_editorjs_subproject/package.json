@@ -1,0 +1,22 @@
+{
+  "name": "for_editorjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.20.2",
+    "@editorjs/editorjs": "^2.25.0",
+    "@editorjs/embed": "^2.5.3",
+    "@editorjs/header": "^2.6.2",
+    "@editorjs/list": "^1.7.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.0"
+  }
+}

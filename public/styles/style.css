@@ -2557,4 +2557,10 @@ p {
   padding: 24px;
 }
 
+#content-body {
+  padding: 16px;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
 /*# sourceMappingURL=style.css.map */

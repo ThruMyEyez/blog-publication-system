@@ -36,11 +36,15 @@ hbs.registerHelper('dateFormat', function (value) {
 });
 
 hbs.registerHelper('trimString', function (passedString) {
-  var theString = passedString.substring(0, 20);
+  if (passedString) {
+    var theString = passedString.substring(0, 20);
 
-  return passedString.length > 20
-    ? new hbs.SafeString(theString + '...')
-    : new hbs.SafeString(theString);
+    return passedString.length > 20
+      ? new hbs.SafeString(theString + '...')
+      : new hbs.SafeString(theString);
+  } else {
+    return ' ';
+  }
 });
 
 hbs.registerHelper('isSet', function (value) {
