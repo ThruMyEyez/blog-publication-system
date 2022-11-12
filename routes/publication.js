@@ -129,7 +129,7 @@ router.get(
       .limit(perPage)
       .then((articles) => {
         publications = articles;
-        return Publication.count({ user: req.user._id });
+        return Publication.count({ author: req.user._id });
       })
       .then((count) => {
         pagination = {
