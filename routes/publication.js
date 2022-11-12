@@ -57,7 +57,7 @@ router.get('/', (req, res, next) => {
               : false;
         });
       });
-      console.log('Created:', publications[0].createdLocalDate);
+      // console.log('Created:', publications[0].createdLocalDate);
       res.render('publications/main', { articles: publications });
     })
     .catch((error) => {
