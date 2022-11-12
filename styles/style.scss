@@ -34,6 +34,7 @@ $fsize2: 1.25rem;
   margin: 0;
   padding: 0;
 }
+
 a {
   text-decoration: none;
 }
@@ -47,6 +48,9 @@ body {
 main {
   //min-height: 100vh;
   margin-left: 86px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   padding-bottom: 2.65rem;
 }
 
@@ -334,6 +338,37 @@ nav {
           @include generalHover();
         }
       }
+    }
+  }
+}
+
+/*** Profile Section ***/
+/*** Tabination ***/
+.profile-tabs {
+  width: 100%;
+  margin-top: 1rem;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid $color5;
+  .tab {
+    border-radius: 3px 3px 0px 0px;
+    background: $color2;
+    color: $color1;
+    padding: 10px 20px;
+    margin: 0 4px;
+    box-shadow: 6px -2px 15px -11px rgba(0, 0, 0, 0.75),
+      -6px -2px 15px -11px rgba(0, 0, 0, 0.75);
+    a {
+      color: $color1;
+    }
+  }
+  .active {
+    background: $color1;
+    border-top: 3px solid $color6;
+    a {
+      color: $color5;
+      font-weight: bold;
     }
   }
 }

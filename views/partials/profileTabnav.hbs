@@ -1,39 +1,27 @@
 {{#if isOwnProfile}}
-  <ul class="nav nav-tabs mt-3 mb-2">
-    <li class="nav-item">
-      <a
-        href="/profile/{{_id}}"
-        class="nav-link {{actProfileTab}}"
-      >{{username}}'s Profile</a>
+  <ul class="profile-tabs">
+    <li class="tab {{actProfileTab}}">
+      <a href="/profile/{{_id}}" class="nav-link">{{username}}'s Profile</a>
     </li>
-    <li class="nav-item">
-      <a href="/profile/my-history" class="nav-link {{actReadHisTab}}">Last read
-        Articles</a>
+    <li class="tab {{actReadHisTab}}">
+      <a href="/profile/my-history" class="nav-link">Last read Articles</a>
     </li>
-    <li class="nav-item">
-      <a
-        href="/profile/my-comments"
-        class="nav-link {{actCommentHisTab}}"
-      >Comment history</a>
+    <li class="tab {{actCommentHisTab}}">
+      <a href="/profile/my-comments" class="nav-link">Comment history</a>
     </li>
-    <li class="nav-item">
-      <a href="/profile/follow-list" class="nav-link {{actFollowTab}}">Follow
-        list</a>
+    <li class="tab {{actFollowTab}}">
+      <a href="/profile/follow-list" class="nav-link">Follow list</a>
     </li>
-    <li class="nav-item">
-      <a href="/profile/edit" class="nav-link {{actEditProfileTab}}">Edit
-        Profile</a>
+    <li class="tab {{actEditProfileTab}}">
+      <a href="/profile/edit" class="nav-link">Edit Profile</a>
     </li>
   </ul>
 {{else}}
-  <ul class="nav nav-tabs mt-3 mb-2">
-    <li class="nav-item">
-      <a
-        href="/profile/{{_id}}"
-        class="nav-link {{actProfileTab}}"
-      >{{username}}'s Profile</a>
+  <ul class="profile-tabs">
+    <li class="tab {{actProfileTab}}">
+      <a href="/profile/{{_id}}" class="nav-link">{{username}}'s Profile</a>
     </li>
-    <li class="nav-item">
+    <li class="tab">
       <a href="/authentication/sign-in" class="nav-link">Log in</a>
     </li>
   </ul>
