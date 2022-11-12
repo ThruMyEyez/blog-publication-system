@@ -1,3 +1,89 @@
+{{#each articles}}
+
+  <article class="article-card mt-2">
+    <div class="thumbnail-box">
+      <div>
+        {{#each categories}}<span>{{this}}</span>{{/each}}
+      </div>
+      <a href="/articles/{{_id}}">
+        <img src="{{thumbnailUrl}}" alt="Article thumbnail image" />
+      </a>
+    </div>
+
+    <div class="article-card-content">
+      <a href="/articles/{{_id}}">
+        <h3>{{title}}</h3>
+      </a>
+
+      <p>He we could place the first 2 sentences from the article itself. For
+        now lorem ipsum etc...
+      </p>
+
+      <div class="article-card-footer">
+
+        <div>
+          <span>
+            <img src="{{author.avatarUrl}}" alt="Author avatar" />
+
+            <a href="/profile/{{author._id}}">
+              <h4>{{author.username}}</h4>
+            </a>
+          </span>
+
+          <div class="publish-date"> on {{createdLocalDate}}</div>
+
+          <div class="share">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-telegram"></i></a>
+          </div>
+
+        </div>
+        <!-- handle meta data -->
+        <div>
+          {{#if authenticatedViewer}}
+            {{#ifEqual author.id viewerId}}
+              <a
+                class="btn btn-outline-secondary btn-sm d-inline border-0 border-top"
+                href="/articles/{{_id}}/edit"
+              ><i class="fas fa-edit"></i></a>
+            {{else}}
+              {{#if isFollowed}}
+                <!-- if reader is already following then show "unfollow" btn -->
+                <form action="/profile/{{author._id}}/unfollow" method="post">
+                  <button class="btn mx-3 btn-outline-secondary"><i
+                      class="fa-solid fa-user-minus"
+                    ></i></button>
+                </form>
+              {{else}}
+                <form
+                  class=""
+                  action="/profile/{{author._id}}/follow"
+                  method="post"
+                >
+                  <button class="btn mx-3 btn-outline-secondary"><i
+                      class="fa-solid fa-user-plus"
+                    ></i></button>
+                </form>
+              {{/if}}
+
+            {{/ifEqual}}
+          {{/if}}
+        </div>
+
+      </div>
+    </div>
+  </article>
+
+{{/each}}
+
+<script>
+  const shareOption = document.querySelector('.share-option');
+  document.querySelector('.share-button').addEventListener('click', function ()
+  { console.log("La");this.classList.toggle('active');
+  shareOption.classList.toggle('active'); });
+</script>
+<!--
 <div class="row">
   {{#each articles}}
     <div class="card m-2" style="width:420px">
@@ -40,7 +126,7 @@
             >edit Article</a>
           {{else}}
             {{#if isFollowed}}
-              <!-- if reader is already following then show "unfollow" btn -->
+              if reader is already following then show "unfollow" btn
               <form action="/profile/{{author._id}}/unfollow" method="post">
                 <button class="btn mx-3 btn-outline-secondary">unfollow Author</button>
               </form>
@@ -61,3 +147,4 @@
     </div>
   {{/each}}
 </div>
+-->

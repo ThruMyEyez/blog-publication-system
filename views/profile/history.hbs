@@ -2,36 +2,23 @@
 
 
 <div class="container">
-  <h3 class="m-2 ">My read history</h3>
-  <ul class="list-group">
+  <h3 class="mt-2 ">My Read History</h3>
+  <ul class="history">
     {{#each readHistory}}
-      <li class="list-group-item">
-        <p>title: <b>{{publication.title}}</b></p>
-        <p>read <b>{{__v}}</b> times </p>
-        <p>read on {{lastReadDate}} at {{lastReadTime}}</p>
-        <p> {{publication.author.username}} </p>
-        <p> {{publication.author.profile.fullName}} </p>
-        <img
+      <li>
+        <p>Title: <b><a href="/articles/{{publication._id}}">{{trimString publication.title}}</a></b></p>
+        <p>Read <b>{{__v}}</b> times </p>
+        <p>Read on {{lastReadDate}} at {{lastReadTime}}</p>
+       <div><img
           src="{{publication.author.avatarUrl}}"
           alt="Author avatar picture"
           style="height: 24px;width; 24px;"
         />
+         <p> {{publication.author.profile.fullName}} </p></div>
+        
       </li>
       {{ist}}
     {{/each}}
   </ul>
-  {{{paginator
-    pagination
-    ulElementClass="pagination mx-auto my-3"
-    liElementClass="btn btn-secondary"
-    liDisabledElementClass="btn btn-secondary btn-outline-secondary"
-    liActivePageClass="btn btn-warning"
-    liElementPageClass="btn btn-secondary"
-    aElementClass="text-reset text-decoration-none"
-    aActiveElementClass="text-reset text-decoration-none"
-    firstText="first"
-    lastText="last"
-    prevText="<<"
-    nextText=">>"
-  }}}
 </div>
+{{> pagination}}

@@ -1,16 +1,19 @@
 {{> profileTabnav}}
 
-<div class="container">
-<<<<<<< HEAD
+<div class="container mt-2">
   <h3>Your Profile Basic Info</h3>
+  <div class="row">
+<div> 
   <p>Username: {{username}}</p>
   <p>Email: {{email}}</p>
+  </div>
+  <div><img src="{{avatarUrl}}" alt="your current profile picture" style="max-width: 180px;"></div>
+ 
 
-=======
-  <p>username: {{username}}</p>
-  <p>email: {{email}}</p>
-  <img src="{{avatarUrl}}" alt="your current profile picture" style="max-width: 180px;">
->>>>>>> 791f72367260bb93eeb55b2aaa43025388aaa3ed
+  </div>
+  
+  
+
   {{#if emailConfirmed}}
     <p>Your Email is confirmed</p>
   {{else}}
@@ -25,11 +28,11 @@
     <!-- here could be a profile partial -->
     <p>Full name: {{profile.fullName}}</p>
     <p>Age: {{profile.age}}</p>
-    <p>Gender: {{profile.gender}}</p>
+
     <!-- profile skills array each -->
     <div>
       <P><b>Your skills:</b></P>
-      <ul class="d-flex list-unstyled">
+      <ul class="skill list-unstyled">
         {{#each profile.skills}}
           <li><span>{{this}}&nbsp;</span></li>
         {{/each}}
@@ -39,7 +42,7 @@
     <!-- profile experience array each -->
     <div>
       <P><b>Your experience:</b></P>
-      <ul class="list-unstyled">
+      <ul class="skill list-unstyled">
         {{#each profile.experience}}
           {{#if @first}}
             <li><strong>{{this}}</strong></li>
@@ -94,17 +97,5 @@
       class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
       href="/profile/edit"
     >Edit profile</a>
-    <a
-      class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
-      href="/profile/follow-list"
-    >My follower list</a>
-    <a
-      class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
-      href="/profile/my-comments"
-    >My comment history</a>
-    <a
-      class="mx-1 my-3 btn btn-secondary btn-sm d-inline border-0 border-top"
-      href="/profile/my-history"
-    >My read history</a>
   {{/if}}
 </div>

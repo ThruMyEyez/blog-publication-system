@@ -37,6 +37,10 @@ router.get('/', (req, res, next) => {
         article.viewerId = req.user ? String(req.user._id) : false;
         console.log(article.author._id);
       });
+      articles.forEach((article) => {
+        article.createdLocalDate = article.createdAt.toLocaleDateString();
+        article.createdLocalTime = article.createdAt.toLocaleTimeString();
+      });
       publications = articles;
       if (req.user) {
         return Follow.find({ follower: req.user._id });
@@ -53,7 +57,7 @@ router.get('/', (req, res, next) => {
               : false;
         });
       });
-      console.log(publications);
+      console.log('Created:', publications[0].createdLocalDate);
       res.render('publications/main', { articles: publications });
     })
     .catch((error) => {
@@ -123,7 +127,6 @@ router.get(
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage)
-      .populate('author')
       .then((articles) => {
         publications = articles;
         return Publication.count({ user: req.user._id });
@@ -134,6 +137,8 @@ router.get(
           limit: perPage,
           totalRows: count
         };
+
+        console.log(publications);
         res.render('publications/my-own', {
           articles: publications,
           pagination

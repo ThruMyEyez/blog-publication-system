@@ -10,6 +10,25 @@ window.addEventListener(
   false
 );
 
+/* Scroll to top btn */
+const toTop = () => {
+  document.body.scrollIntoView();
+};
+const scrollTopBtn = document.querySelector('.scroll-top-btn');
+const scrollPxTres = 100;
+const scrollContainer = () => {
+  return document.documentElement || document.body;
+};
+document.addEventListener('scroll', () => {
+  if (scrollContainer().scrollTop > showPxTres) {
+    scrollTopBtn.classList.remove('hidden');
+  } else {
+    scrollTopBtn.classList.add('hidden');
+  }
+});
+scrollTopBtn.addEventListener('click', toTop);
+/*end of Scroll to top btn */
+
 function pressButton() {
   document.getElementById('menuBtn').classList.toggle('pressedBtn');
   document.getElementById('navbar').classList.toggle('navbarOpen');

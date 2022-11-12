@@ -43,6 +43,10 @@ hbs.registerHelper('trimString', function (passedString) {
     : new hbs.SafeString(theString);
 });
 
+hbs.registerHelper('isSet', function (value) {
+  return value ? true : false;
+});
+
 hbs.registerHelper('paginator', paginator);
 
 app.use(serveFavicon(path.join(__dirname, 'public/images', 'favicon.ico')));

@@ -2,9 +2,9 @@
 
 <div class="container">
 
-  <h1 class="my-3">profile edit page</h1>
-
-  <img src="{{avatarUrl}}" alt="Your Avatar!" />
+  <h1 class="my-3">Profile Edit Page</h1>
+<div class="img-container"> <img src="{{avatarUrl}}" alt="Your Avatar!" /></div>
+ 
   {{!username}}
   {{!email}}
   {{!emailConfirmed}}
@@ -38,25 +38,25 @@
       <label for="input-email">Email</label>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-2">
       <label for="avatarFile" class="form-label mt-3">Upload your profile photo!</label>
       <input class="form-control" type="file" id="avatarUrl" name="avatarUrl" />
     </div>
 
     {{#ifEqual userType "author"}}
-      <p>your account type is {{userType}}, you allowed to publish articles</p>
+      <p>Your account type is {{userType}}, you allowed to publish articles</p>
 
       {{#if isProfileComplete}}
-        <p>Profile complete! You are allowed now to write and publish Articles!</p>
+        {{!-- <p>Profile complete! You are allowed now to write and publish Articles!</p>
         <a
-          class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
+          class="btn btn-outline-secondary"
           href="/articles/create"
-        >create new article</a>
+        >Create New Article</a> --}}
       {{else}}
         <p>Author Profile Incomplete! You are not allowed to write and publish
           Articles!</p>
         <a
-          class="mx-auto my-3 btn btn-outline-secondary btn-sm d-inline"
+          class="btn btn-outline-secondary"
           href="/profile/complete"
         >Complete profile and become an author!</a>
       {{/if}}
@@ -78,11 +78,11 @@
       </div>
     {{/ifEqual}}
 
-    <button class="btn btn-primary text-indigo-100 my-3">Update my profile</button>
+    <button class="btn btn-primary text-indigo-100">Update Profile</button>
     <a
-      class="mx-auto my-3 btn btn-outline-danger d-inline"
+      class="btn btn-outline-danger"
       href="/profile/delete"
-    >delete profile</a>
+    >Delete Profile</a>
 
   </form>
 
