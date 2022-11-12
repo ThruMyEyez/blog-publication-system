@@ -1,0 +1,39 @@
+<table>
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Title</th>
+      <th>Category</th>
+      <th>Number of Views</th>
+      <th>Created at</th>
+      <th>Options</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each articles}}
+      <tr>
+        <td>{{currentIndex @index}}</td>
+        <td>{{trimString title}}</td>
+        <td>{{#each categories}}<span>{{this}}</span>{{/each}}</td>
+        <td>{{numberOfViews}}</td>
+        <td>{{dateFormat createdAt}}</td>
+        <td>
+          <a href="/articles/{{_id}}" class="btn btn-outline-primary">Read
+            Article</a>
+          {{#if content}}
+            <a href="/articles/{{_id}}/content/edit" class="btn btn-info">Edit
+              Content
+            </a>
+          {{else}}
+            <a href="/articles/{{_id}}/content" class="btn btn-primary">Add
+              Content</a>
+          {{/if}}
+          <a
+            class="btn btn-outline-secondary"
+            href="/articles/{{_id}}/edit"
+          >Edit Article</a>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

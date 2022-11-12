@@ -28,6 +28,21 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 hbs.registerHelper('ifEqual', function (a, b, options) {
   return a === b ? options.fn(this) : options.inverse(this);
 });
+hbs.registerHelper('currentIndex', function (value) {
+  return parseInt(value) + 1;
+});
+hbs.registerHelper('dateFormat', function (value) {
+  return value.toLocaleDateString();
+});
+
+hbs.registerHelper('trimString', function (passedString) {
+  var theString = passedString.substring(0, 20);
+
+  return passedString.length > 20
+    ? new hbs.SafeString(theString + '...')
+    : new hbs.SafeString(theString);
+});
+
 hbs.registerHelper('paginator', paginator);
 
 app.use(serveFavicon(path.join(__dirname, 'public/images', 'favicon.ico')));

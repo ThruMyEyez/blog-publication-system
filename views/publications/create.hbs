@@ -1,15 +1,15 @@
-<div class="container pt-5">
-  <h3>Write a new Article:</h3>
+<div class="container">
+  <h1>Write a new Article</h1>
   <form action="/articles/create" method="POST" enctype="multipart/form-data">
-    <div class="form-floating mb-3">
+    <div class="form-floating">
       <input
         type="text"
         id="input-title"
         name="title"
-        placeholder="labelIsPlaceholder"
+        placeholder="Title for article"
         class="form-control"
       />
-      <label for="input-title">Title for article</label>
+      <label for="input-title">Title for Article</label>
     </div>
 
     <div class="form-floating">
@@ -27,17 +27,18 @@
       </select>
       <label for="categories">Article Category/Topic</label>
     </div>
-    <div class="mb-3">
-      <label for="thumbnail-select-file" class="form-label mt-3">Upload your
-        Article Thumbnail</label>
+    <div class="mt-2">
+      <label for="thumbnail-select-file" class="form-label">Upload your Article
+        Thumbnail</label>
       <input
         class="form-control"
         type="file"
         id="thumbnail-select-file"
         name="thumbnailUrl"
       />
+
     </div>
-    <button class="btn btn-primary text-indigo-100 mt-4">Create Article and
-      start adding content</button>
+    <button class="btn btn-primary text-indigo-100 mt-2">Create Article and
+      Start Adding Content</button>
   </form>
 </div>

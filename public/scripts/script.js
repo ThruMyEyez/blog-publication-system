@@ -1,3 +1,7 @@
+// import EditorJS from '@editorjs/editorjs';
+// import Header from '@editorjs/header';
+// import List from '@editorjs/list';
+
 window.addEventListener(
   'load',
   () => {
@@ -13,7 +17,7 @@ function pressButton() {
 //* ???: This is just for testing purpose and no get familiar with it. Can be removed from this line */
 const editor = new EditorJS({
   placeholder: 'Write something awesome here!',
-
+  inlineToolbar: ['link', 'marker', 'bold', 'italic'],
   tools: {
     header: {
       class: Header,
@@ -33,10 +37,11 @@ const editor = new EditorJS({
       class: Marker,
       shortcut: 'CMD+SHIFT+M'
     }
-    //inlineCode: {
-    //  class: InlineCode,
-    //  shortcut: 'CMD+SHIFT+M'
-    //}
+
+    // inlineCode: {
+    //   class: InlineCode,
+    //   shortcut: 'CMD+SHIFT+M'
+    // }
   },
   onReady: () => {
     console.log('Editor.js is ready to work!');
@@ -57,16 +62,26 @@ const saveBtn = document.querySelector('#editorBtn');
   const actualResponse = await res.json();
 };*/
 
+// editor
+//   .save()
+//   .then((outputData) => {
+//     console.log('Article data: ', outputData);
+//   })
+//   .catch((error) => {
+//     console.log('Saving failed: ', error);
+//   });
+
 saveBtn.addEventListener('click', () => {
   editor
     .save()
     .then((editorData) => {
+      console.log(editorData);
       //postData(editorData);
-      return fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editorData)
-      });
+      // return fetch(window.location.pathname, {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   content: JSON.stringify(editorData)
+      // });
     })
     .catch((error) => {
       console.log('err: ', error);

@@ -115,6 +115,7 @@ router.get(
   [routeGuard, authorGuard, completedProfileGuard],
   (req, res, next) => {
     let publications,
+      pagination,
       perPage = 5,
       page = req.query.page ? +req.query.page : 1;
 
@@ -125,7 +126,7 @@ router.get(
       .populate('author')
       .then((articles) => {
         publications = articles;
-        return Publication.count({ user: id });
+        return Publication.count({ user: req.user._id });
       })
       .then((count) => {
         pagination = {
@@ -133,8 +134,6 @@ router.get(
           limit: perPage,
           totalRows: count
         };
-        console.log(publications);
-        console.log(pagination);
         res.render('publications/my-own', {
           articles: publications,
           pagination
@@ -250,7 +249,6 @@ router.get('/:id/delete', routeGuard, (req, res, next) => {
         ? String(req.user.id) === String(publication.author._id)
         : false;
       res.render('publications/delete', publication);
-      //console.log(`is user === author for publication? => ${publication.isOwn}`);
     })
     .catch((error) => {
       console.log(`Error getting publicationDocument from DB: ${error}`);
@@ -296,7 +294,14 @@ router.get('/:id/content', (req, res, next) => {
     });
 });
 //*ROUTES TO DO
-router.post('/:id/content', (req, res, next) => {});
+router.post('/:id/content', (req, res, next) => {
+  const { id } = req.params;
+  return Publication.findByIdAndUpdate(
+    id,
+    { content: req.body.content, publication: publicationId },
+    { $inc: { __v: 1 } }
+  );
+});
 router.get('/:id/content/edit', (req, res, next) => {});
 router.post('/:id/content/edit', (req, res, next) => {});
 router.get('/:id/edit', (req, res, next) => {});
