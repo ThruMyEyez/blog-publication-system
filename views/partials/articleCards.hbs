@@ -5,7 +5,9 @@
       <div>
         {{#each categories}}<span>{{this}}</span>{{/each}}
       </div>
-      <img src="{{thumbnailUrl}}" alt="Article thumbnail image" />
+      <a href="/articles/{{_id}}">
+        <img src="{{thumbnailUrl}}" alt="Article thumbnail image" />
+      </a>
     </div>
 
     <div class="article-card-content">
