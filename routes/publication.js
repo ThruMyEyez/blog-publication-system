@@ -275,6 +275,7 @@ router.post('/:id/delete', routeGuard, (req, res, next) => {
     })
     .then((result) => {
       console.log(`publication with ID ${publicationId} deleted.`);
+      res.redirect('/articles');
     })
     .catch((error) => {
       console.log(
