@@ -2,6 +2,9 @@
 
   <article class="article-card">
     <div class="thumbnail-box">
+      <div>
+        {{#each categories}}<span>{{this}}</span>{{/each}}
+      </div>
       <img src="{{thumbnailUrl}}" alt="Article thumbnail image" />
     </div>
 
@@ -22,7 +25,7 @@
             <a href="/profile/{{author._id}}">
               <h4>{{author.username}}</h4>
             </a>
-            <div class="publish-date"> on 28 Jun 2020</div>
+            <div class="publish-date"> on {{createdLocalDate}}</div>
           </div>
         </div>
         <!-- handle meta data -->
